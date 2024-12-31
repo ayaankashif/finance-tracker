@@ -1,5 +1,8 @@
 package com.ayaan.FinanceTracker.models;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +20,7 @@ public class AccountTransaction {
     @Column(name = "transaction_id")
     private Integer transactionId;
 
-    @ManyToOne
+    @ManyToOne 
     @JoinColumn(name = "bank_acc_id") //maps to the bankAccount ID
     private BankAccount bankAccId;
 
@@ -25,7 +28,7 @@ public class AccountTransaction {
     private String transactionType;
 
     @Column(name = "transaction_amount")    
-    private Double transactionAmt;
+    private double transactionAmt; 
 
     public AccountTransaction() {
     }

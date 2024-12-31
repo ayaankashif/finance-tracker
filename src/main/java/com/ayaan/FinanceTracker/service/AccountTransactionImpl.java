@@ -11,19 +11,31 @@ public class AccountTransactionImpl {
 
     AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
+    BankAccountImpl bankAccountImpl = new BankAccountImpl();
 
-    public void addTransaction(){
-        System.out.println("Transaction Type");
-        Scanner scanner = new Scanner(System.in);
-        String type = scanner.nextLine();
-        System.out.println("Transaction Amount");
-        Double amount = scanner.nextDouble();
-        System.out.println("Bank Account ID");
-        int bankAccId = scanner.nextInt();
-        BankAccount bankAccount = bankAccountDAO.getBankAccountById(bankAccId);        
+    public void addTransaction() {
+        try {
+            System.out.println("Transaction Type");
+            Scanner scanner = new Scanner(System.in);
+            String type = scanner.nextLine();
+            System.out.println("Transaction Amount");
+            Double amount = scanner.nextDouble();
+            bankAccountImpl.listBankAccount();
+            System.out.println("Select your Bank Account by ID ");
+            Integer bank = scanner.nextInt();
+            BankAccount bankAccount = bankAccountDAO.getBankAccountById(bank);
 
-        AccountTransaction accountTransaction = new AccountTransaction(bankAccount, type, amount);
-        
-        accountTransactionDAO.saveTransaction(accountTransaction);
+            if (bankAccount == null) {
+                System.out.println("\nError: No Bank account found");
+                return;
+            }
+            AccountTransaction accountTransaction = new AccountTransaction(bankAccount, type, amount);
+            accountTransactionDAO.saveTransaction(accountTransaction);
+            System.out.println("\nTransaction added successfully");
+
+        } catch (Exception e) {
+            System.out.println("\nError: Invalid input");
+            e.printStackTrace();
+        }
     }
 }

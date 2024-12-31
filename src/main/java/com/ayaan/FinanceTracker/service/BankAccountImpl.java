@@ -15,7 +15,7 @@ public class BankAccountImpl {
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
         BankAccount bankAccount = new BankAccount(name, new Date(System.currentTimeMillis()));
-
+        
         bankAccountDAO.saveBankAccount(bankAccount);
     }
 
