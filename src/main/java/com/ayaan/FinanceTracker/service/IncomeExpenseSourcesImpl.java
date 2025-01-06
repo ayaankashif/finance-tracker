@@ -15,7 +15,7 @@ public class IncomeExpenseSourcesImpl {
         } catch (Exception e) {
             System.out.println("Error: Invalid input");
             e.printStackTrace();
+        }
     }
-}
 
 }

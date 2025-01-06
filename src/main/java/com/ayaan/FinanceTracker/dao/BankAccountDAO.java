@@ -1,6 +1,5 @@
 package com.ayaan.FinanceTracker.dao;
 
-import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.util.HibernateUtil;
 import org.hibernate.Session;

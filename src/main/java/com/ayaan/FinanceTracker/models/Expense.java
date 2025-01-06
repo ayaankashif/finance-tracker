@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,21 +18,43 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "expense_id")
     private Integer expenseId;
-    @Column(name = "expense_source_id")
-    private ExpenseSource expenseSourceId;
+
+    @ManyToOne
+    @JoinColumn(name = "expense_source_id")
+    private IncomeExpenseSources incomeExpenseSourceId;
+
     @Column(name = "name")
 	private String name;
-    @Column(name = "bank_acc_id")
+
+    @ManyToOne
+    @JoinColumn(name = "bank_acc_id")
 	private BankAccount bankAccId; 
+
     @Column(name = "expense")
     private double expense;
-    @Column(name = "expense_sources")
+
+    @Column(name = "expense_source")
     private String expenseSources;
-    @Column(name = "date")
+
+    @Column(name = "expense_date")
     private Date date;
 
     public Expense(){
         
+    }
+
+    public Expense(String name, BankAccount bankAccId, double expense, IncomeExpenseSources incomeExpenseSource, String expenseSources, Date date) {
+        this.name = name;
+        this.bankAccId = bankAccId;
+        this.expense = expense;
+        this.incomeExpenseSourceId = incomeExpenseSource;
+        this.expenseSources = expenseSources;
+        this.date = date;
+    }
+
+    public Expense(Integer expenseId, String name, BankAccount bankAccId, double expense, IncomeExpenseSources incomeExpenseSource, String expenseSources, Date date) {
+        this(name, bankAccId, expense, incomeExpenseSource, expenseSources, date);
+        this.expenseId = expenseId; 
     }
 
     public Integer getExpenseId() {
@@ -39,11 +63,11 @@ public class Expense {
     public void setExpenseId(Integer expenseId) {
         this.expenseId = expenseId;
     }
-    public ExpenseSource getExpenseSourceId() {
-        return expenseSourceId;
+    public IncomeExpenseSources getExpenseSourceId() {
+        return incomeExpenseSourceId;
     }
-    public void setExpenseSourceId(ExpenseSource expenseSourceId) {
-        this.expenseSourceId = expenseSourceId;
+    public void setExpenseSourceId(IncomeExpenseSources incomeExpenseSourceId) {
+        this.incomeExpenseSourceId = incomeExpenseSourceId;
     }
     public String getName() {
         return name;

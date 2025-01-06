@@ -2,7 +2,6 @@ package com.ayaan;
 
 // import java.sql.Date;
 // import java.util.List;
-
 // import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 // import com.ayaan.FinanceTracker.models.BankAccount;
 // import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
@@ -17,11 +16,12 @@ import com.ayaan.FinanceTracker.service.Menu;
  */
 public class App {
     public static void main( String[] args ) {
-        
+
         Menu menu = new Menu();
         menu.financeMenu();
 
-        // IncomeImpl incomeImpl = new IncomeImpl();
+
+       // IncomeImpl incomeImpl = new IncomeImpl();
         // incomeImpl.addIncome();
 
         // BankAccountDAO bankAccountDAO = new BankAccountDAO();
