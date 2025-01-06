@@ -1,7 +1,6 @@
 package com.ayaan.FinanceTracker.models;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,8 +19,8 @@ public class AccountTransaction {
     @Column(name = "transaction_id")
     private Integer transactionId;
 
-    @ManyToOne 
-    @JoinColumn(name = "bank_acc_id") //maps to the bankAccount ID
+    @ManyToOne
+    @JoinColumn(name = "bank_acc_id", referencedColumnName = "bank_acc_id") //maps to the bankAccount ID
     private BankAccount bankAccId;
 
     @Column(name = "transaction_type")    
@@ -30,20 +29,30 @@ public class AccountTransaction {
     @Column(name = "transaction_amount")    
     private double transactionAmt; 
 
+    @Column(name = "transaction_date")
+    private  Date  transactionDate;
+
     public AccountTransaction() {
     }
 
-    public AccountTransaction(BankAccount bankAccId, String transactionType, Double transactionAmt) {
+    public AccountTransaction(BankAccount bankAccId, String transactionType, Double transactionAmt, Date transactionDate) {
         this.bankAccId = bankAccId;
         this.transactionType = transactionType;
         this.transactionAmt = transactionAmt;
+        this.transactionDate = transactionDate;
     }
     
-    public AccountTransaction(Integer transactionId, BankAccount bankAccId, String transactionType, Double transactionAmt) {
-        this(bankAccId, transactionType, transactionAmt);
+    public AccountTransaction(Integer transactionId, BankAccount bankAccId, String transactionType, Double transactionAmt, Date transactionDate) {
+        this(bankAccId, transactionType, transactionAmt, transactionDate);
         this.transactionId = transactionId;
     }
     
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
     public Integer getTransactionId() {
         return transactionId;
     }
