@@ -32,6 +32,7 @@
         <mapping class="com.ayaan.FinanceTracker.models.AccountTransaction"/>
         <mapping class="com.ayaan.FinanceTracker.models.Income"/>
         <mapping class="com.ayaan.FinanceTracker.models.IncomeExpenseSources"/>
+        <mapping class="com.ayaan.FinanceTracker.models.Expense"/>
 
 
     </session-factory>

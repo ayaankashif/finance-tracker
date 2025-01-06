@@ -32,7 +32,6 @@ public class AccountTransactionImpl {
             }
             System.out.println("\nBank Transaction List:");
             System.out.println("Bank Name - Amount - Transaction Type");
-    
             for (Object[] record : transaction) {
                 String bankName = (String) record[0];
                 Double transactionAmt = (Double) record[1];
@@ -40,6 +39,7 @@ public class AccountTransactionImpl {
 
                 System.out.println(bankName + " - " + transactionAmt + " - " + transactionType);
             }
+
         } catch (Exception e) {
             System.out.println("An error occurred while fetching bank transactions.");
             e.printStackTrace(); 

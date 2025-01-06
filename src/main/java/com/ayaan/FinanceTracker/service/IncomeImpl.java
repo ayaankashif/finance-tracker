@@ -18,7 +18,6 @@ public class IncomeImpl {
     AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
     IncomeExpenseSourcesImpl incomeExpenseSourcesImpl = new IncomeExpenseSourcesImpl();
     IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAO();    
-    IncomeExpenseSources incomeExpenseSources = new IncomeExpenseSources();
 
     public void addIncome() {
         try {
@@ -50,7 +49,6 @@ public class IncomeImpl {
             accountTransactionImpl.addTransaction(bankAccount, "Credit", income);
             incomeDAO.saveIncome(income1);
 
-
             System.out.println("\nIncome added successfully");
 
         } catch (Exception e) {
@@ -75,6 +73,7 @@ public class IncomeImpl {
         System.out.println("Income: ");
         Double income = scanner.nextDouble();
 
+        IncomeExpenseSources incomeExpenseSources = null;
         while (incomeExpenseSources == null) {
             System.out.println("Income Source: ");
             String incomeSource = scanner.nextLine();

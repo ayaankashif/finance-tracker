@@ -5,12 +5,13 @@ import java.util.Scanner;
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 
 public class Menu {
-    BankAccountImpl bankAccountImpl = new BankAccountImpl();   
-    AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();   
+    BankAccountImpl bankAccountImpl = new BankAccountImpl();
+    AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
     IncomeImpl incomeImpl = new IncomeImpl();
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
-    
-    public void financeMenu(){
+    ExpenseImpl expenseImpl = new ExpenseImpl();
+
+    public void financeMenu() {
         System.out.println("\nFinance Tracker\n ");
         System.out.println("1. Bank Account");
         System.out.println("2. Income ");
@@ -37,13 +38,13 @@ public class Menu {
         }
     }
 
-    public void bankMenu(){
+    public void bankMenu() {
         System.out.println("Bank Account Menu\n ");
         System.out.println("1. Add Bank Account");
         System.out.println("2. Bank Transactions");
-        System.out.println( "3. Update Bank Account");
+        System.out.println("3. Update Bank Account");
         System.out.println("4. List Bank Account");
-        Scanner scanner = new Scanner(System.in);  
+        Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
         switch (input) {
@@ -53,8 +54,8 @@ public class Menu {
             case 2:
                 accountTransactionImpl.listBankTransaction();
                 // bankAccountImpl.updateBankAccount();
-                break;  
-            case 3: 
+                break;
+            case 3:
                 bankAccountImpl.listBankAccount();
                 break;
 
@@ -64,7 +65,7 @@ public class Menu {
         }
     }
 
-    public void incomeMenu(){
+    public void incomeMenu() {
         System.out.println("Income Menu\n ");
         System.out.println("1. Add Income Source");
         System.out.println("2. Add Income");
@@ -92,24 +93,31 @@ public class Menu {
         }
     }
 
-    public void expenseMenu(){
+    public void expenseMenu() {
         System.out.println("Expense Menu\n ");
         System.out.println("1. Add Expense Source");
-        System.out.println("1. Add Expense");
-        System.out.println("2. Update Expense");
-        System.out.println("3. List Expense");
+        System.out.println("2. Add Expense");
+        System.out.println("3. Update Expense");
+        System.out.println("4. List Expense");
+        System.out.println("5. List Expense Sources");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
         switch (input) {
             case 1:
-                //expenseImpl.addExpense();
+                expenseImpl.addExpenseSource();
                 break;
             case 2:
-                //expenseImpl.updateExpense();
+                expenseImpl.addExpense();
                 break;
             case 3:
-                //expenseImpl.listExpense();
+                expenseImpl.updateExpense();
+                break;
+            case 4:
+                expenseImpl.listExpense();
+                break;
+            case 5: 
+                expenseImpl.listExpenseSources();
                 break;
             default:
                 System.out.println("Invalid Choice");

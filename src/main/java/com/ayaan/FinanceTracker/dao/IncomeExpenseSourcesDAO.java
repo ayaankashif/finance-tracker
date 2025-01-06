@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 import com.ayaan.FinanceTracker.util.HibernateUtil;
 
