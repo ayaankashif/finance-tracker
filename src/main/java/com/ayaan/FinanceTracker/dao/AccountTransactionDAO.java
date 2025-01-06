@@ -74,7 +74,33 @@ public class AccountTransactionDAO {
                           .list();
         }
     }
-    
+
+    public List<Object[]> accountDashboard() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT ba.name, sum(at.transactionAmt) FROM AccountTransaction at " +
+                         "JOIN at.bankAccId ba " +  
+                         "GROUP BY at.bankAccId";
+            return session.createQuery(hql, Object[].class).list();
+        }
+    }
+
+    public List<Object[]> creditStats() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT ba.name, at.transactionAmt FROM AccountTransaction at " +
+                         "JOIN at.bankAccId ba " +  
+                         "WHERE at.transactionType = 'Credit' ";
+            return session.createQuery(hql, Object[].class).list();
+        }
+    }
+
+    public List<Object[]> debitStats() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT ba.name, at.transactionAmt FROM AccountTransaction at " +
+                         "JOIN at.bankAccId ba " +  
+                         "WHERE at.transactionType = 'Debit' ";
+            return session.createQuery(hql, Object[].class).list();
+        }
+    }
 
     public List <AccountTransaction> getAllTransactions() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

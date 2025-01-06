@@ -12,7 +12,7 @@ import com.ayaan.FinanceTracker.models.Income;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 
 public class IncomeImpl {
-
+    
     IncomeDAO incomeDAO = new IncomeDAO();
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
     AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
