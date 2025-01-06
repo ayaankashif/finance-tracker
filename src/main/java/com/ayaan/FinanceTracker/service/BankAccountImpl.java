@@ -14,9 +14,14 @@ public class BankAccountImpl {
         System.out.println("Bank Name: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
-        BankAccount bankAccount = new BankAccount(name, new Date(System.currentTimeMillis()));
-        
+        BankAccount bankAccount = bankAccountDAO.getBankAccountByCondition(name);
+        if (bankAccount != null) {
+            System.out.println("Bank Account already exists");
+            return;
+        }
+        bankAccount = new BankAccount(name, new Date(System.currentTimeMillis()));
         bankAccountDAO.saveBankAccount(bankAccount);
+        System.out.println("Bank Account Added");
     }
 
     public void updateBankAccount() {
@@ -28,6 +33,7 @@ public class BankAccountImpl {
         BankAccount bankAccount = new BankAccount(id, name, new Date(System.currentTimeMillis()));
 
         bankAccountDAO.updateBankAccount(bankAccount);
+        System.out.println("Bank Account Updated");
     }
 
     public void listBankAccount() {
@@ -41,4 +47,5 @@ public class BankAccountImpl {
             e.printStackTrace();
         }
     }
+
 }

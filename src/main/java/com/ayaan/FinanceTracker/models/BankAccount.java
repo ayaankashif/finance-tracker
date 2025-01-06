@@ -24,6 +24,7 @@ public class BankAccount {
     private Date accountDate;
 
     public BankAccount() {
+        
     }
 
     public BankAccount(String name, Date accountDate) {

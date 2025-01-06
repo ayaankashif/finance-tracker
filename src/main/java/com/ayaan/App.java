@@ -16,10 +16,13 @@ import com.ayaan.FinanceTracker.service.Menu;
  *
  */
 public class App {
-    public static void main( String[] args ){
+    public static void main( String[] args ) {
         
         Menu menu = new Menu();
         menu.financeMenu();
+
+        // IncomeImpl incomeImpl = new IncomeImpl();
+        // incomeImpl.addIncome();
 
         // BankAccountDAO bankAccountDAO = new BankAccountDAO();
 

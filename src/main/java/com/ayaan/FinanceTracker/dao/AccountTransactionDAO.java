@@ -1,5 +1,6 @@
 package com.ayaan.FinanceTracker.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -61,6 +62,19 @@ public class AccountTransactionDAO {
             return session.get(AccountTransaction.class, id);
         }
     }
+
+    public List<Object[]> getBankTransaction() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT ba.name, at.transactionAmt, at.transactionType FROM AccountTransaction at " +
+                         "JOIN at.bankAccId ba " +
+                         "WHERE at.transactionDate BETWEEN :startDate AND :endDate";
+            return session.createQuery(hql, Object[].class)
+                          .setParameter("startDate", Date.valueOf("2025-01-01"))
+                          .setParameter("endDate", Date.valueOf("2025-01-31"))
+                          .list();
+        }
+    }
+    
 
     public List <AccountTransaction> getAllTransactions() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

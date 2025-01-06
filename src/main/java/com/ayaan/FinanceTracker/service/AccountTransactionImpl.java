@@ -1,41 +1,48 @@
 package com.ayaan.FinanceTracker.service;
 
-import java.util.Scanner;
+import java.util.List;
 
 import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
-import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 
 public class AccountTransactionImpl {
 
     AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
-    BankAccountDAO bankAccountDAO = new BankAccountDAO();
-    BankAccountImpl bankAccountImpl = new BankAccountImpl();
 
-    public void addTransaction() {
+    public void addTransaction(BankAccount bankAccount, String transactionType, Double transactionAmount) {
         try {
-            System.out.println("Transaction Type");
-            Scanner scanner = new Scanner(System.in);
-            String type = scanner.nextLine();
-            System.out.println("Transaction Amount");
-            Double amount = scanner.nextDouble();
-            bankAccountImpl.listBankAccount();
-            System.out.println("Select your Bank Account by ID ");
-            Integer bank = scanner.nextInt();
-            BankAccount bankAccount = bankAccountDAO.getBankAccountById(bank);
-
-            if (bankAccount == null) {
-                System.out.println("\nError: No Bank account found");
-                return;
-            }
-            AccountTransaction accountTransaction = new AccountTransaction(bankAccount, type, amount);
+            AccountTransaction accountTransaction = new AccountTransaction(bankAccount, transactionType, transactionAmount, 
+            new java.sql.Date(System.currentTimeMillis()));
             accountTransactionDAO.saveTransaction(accountTransaction);
             System.out.println("\nTransaction added successfully");
 
         } catch (Exception e) {
             System.out.println("\nError: Invalid input");
             e.printStackTrace();
+        }
+    }
+
+    public void listBankTransaction() {
+        try {
+            List<Object[]> transaction = accountTransactionDAO.getBankTransaction();
+            if (transaction == null || transaction.isEmpty()) {
+                System.out.println("No Bank Transactions Found.");
+                return;
+            }
+            System.out.println("\nBank Transaction List:");
+            System.out.println("Bank Name - Amount - Transaction Type");
+    
+            for (Object[] record : transaction) {
+                String bankName = (String) record[0];
+                Double transactionAmt = (Double) record[1];
+                String transactionType = (String) record[2];
+
+                System.out.println(bankName + " - " + transactionAmt + " - " + transactionType);
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while fetching bank transactions.");
+            e.printStackTrace(); 
         }
     }
 }

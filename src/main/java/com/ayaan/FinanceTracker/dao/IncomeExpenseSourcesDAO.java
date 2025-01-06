@@ -1,20 +1,21 @@
 package com.ayaan.FinanceTracker.dao;
 
-import com.ayaan.FinanceTracker.models.AccountTransaction;
-import com.ayaan.FinanceTracker.models.BankAccount;
-import com.ayaan.FinanceTracker.util.HibernateUtil;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.List;
+import com.ayaan.FinanceTracker.models.BankAccount;
+import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
+import com.ayaan.FinanceTracker.util.HibernateUtil;
 
-public class BankAccountDAO {
+public class IncomeExpenseSourcesDAO {
 
-    public void saveBankAccount(BankAccount bankAccount) {
+    public void saveIncomeExpenseSources(IncomeExpenseSources incomeExpenseSources) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(bankAccount);
+            session.save(incomeExpenseSources);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -24,11 +25,11 @@ public class BankAccountDAO {
         }
     }
 
-    public void updateBankAccount(BankAccount bankAccount) {
+    public void updateIncomeExpenseSources(IncomeExpenseSources incomeExpenseSources) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.update(bankAccount);
+            session.update(incomeExpenseSources);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -38,13 +39,13 @@ public class BankAccountDAO {
         }
     }
 
-    public void deleteBankAccount(BankAccount bankAccount) {
+    public void deleteIncome(Integer id) {   
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            // BankAccount bankAccount = session.get(BankAccount.class, id);
-            if (bankAccount != null) {
-                session.delete(bankAccount);
+            IncomeExpenseSources incomeExpenseSources = session.get(IncomeExpenseSources.class, id);
+            if (incomeExpenseSources != null) {
+                session.delete(incomeExpenseSources);
                 System.out.println("Bank Account is deleted");
             }
             transaction.commit();
@@ -56,25 +57,27 @@ public class BankAccountDAO {
         }
     }
 
-    public BankAccount getBankAccountByCondition(String bankName) {
+    public IncomeExpenseSources getIncomeExpenseSourceByCondition(String source) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM BankAccount WHERE name = :bankName";
-            return session.createQuery(hql, BankAccount.class)
-                          .setParameter("bankName", bankName)
+            String hql = "FROM IncomeExpenseSources WHERE incomeExpenseSource = :source";
+            return session.createQuery(hql, IncomeExpenseSources.class)
+                          .setParameter("source", source)
                           .uniqueResult();
         }
     }
 
-    public BankAccount getBankAccountById(Integer id) {
+    public IncomeExpenseSources getIncomeExpenseSourcesbyId(Integer id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(BankAccount.class, id);
+            return session.get(IncomeExpenseSources.class, id);
         }
     }
 
-    
-    public List<BankAccount> getAllBankAccounts() {
+    public List<IncomeExpenseSources> getAllIncomeExpenseSources(char type) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from BankAccount", BankAccount.class).list();
+            String hql = "FROM IncomeExpenseSources WHERE type = :type";
+            return session.createQuery(hql, IncomeExpenseSources.class)
+                          .setParameter("type", type)
+                          .list();
         }
-    }
+    }   
 }

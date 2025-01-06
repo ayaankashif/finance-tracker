@@ -1,20 +1,20 @@
 package com.ayaan.FinanceTracker.dao;
 
-import com.ayaan.FinanceTracker.models.AccountTransaction;
-import com.ayaan.FinanceTracker.models.BankAccount;
-import com.ayaan.FinanceTracker.util.HibernateUtil;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.List;
+import com.ayaan.FinanceTracker.models.Income;
+import com.ayaan.FinanceTracker.util.HibernateUtil;
 
-public class BankAccountDAO {
+public class IncomeDAO {
 
-    public void saveBankAccount(BankAccount bankAccount) {
+    public void saveIncome(Income income) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(bankAccount);
+            session.save(income);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -24,11 +24,11 @@ public class BankAccountDAO {
         }
     }
 
-    public void updateBankAccount(BankAccount bankAccount) {
+    public void updateIncome(Income income) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.update(bankAccount);
+            session.update(income);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -38,13 +38,13 @@ public class BankAccountDAO {
         }
     }
 
-    public void deleteBankAccount(BankAccount bankAccount) {
+    public void deleteIncome(Income income) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             // BankAccount bankAccount = session.get(BankAccount.class, id);
-            if (bankAccount != null) {
-                session.delete(bankAccount);
+            if (income != null) {
+                session.delete(income);
                 System.out.println("Bank Account is deleted");
             }
             transaction.commit();
@@ -56,25 +56,18 @@ public class BankAccountDAO {
         }
     }
 
-    public BankAccount getBankAccountByCondition(String bankName) {
+    public Income getIncomebyId(Integer id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "FROM BankAccount WHERE name = :bankName";
-            return session.createQuery(hql, BankAccount.class)
-                          .setParameter("bankName", bankName)
-                          .uniqueResult();
+            return session.get(Income.class, id);
         }
     }
 
-    public BankAccount getBankAccountById(Integer id) {
+    public List<Income> getAllIncome() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(BankAccount.class, id);
+            return session.createQuery("from Income", Income.class).list();
         }
     }
 
     
-    public List<BankAccount> getAllBankAccounts() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from BankAccount", BankAccount.class).list();
-        }
-    }
+
 }

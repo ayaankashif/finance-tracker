@@ -2,15 +2,19 @@ package com.ayaan.FinanceTracker.service;
 
 import java.util.Scanner;
 
+import com.ayaan.FinanceTracker.dao.BankAccountDAO;
+
 public class Menu {
     BankAccountImpl bankAccountImpl = new BankAccountImpl();   
     AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();   
+    IncomeImpl incomeImpl = new IncomeImpl();
+    BankAccountDAO bankAccountDAO = new BankAccountDAO();
     
     public void financeMenu(){
         System.out.println("\nFinance Tracker\n ");
         System.out.println("1. Bank Account");
-        System.out.println("2. Deposit Money");
-        System.out.println("2. Account Management");
+        System.out.println("2. Income ");
+        System.out.println("3. Expense ");
         Scanner scanner = new Scanner(System.in);
         Integer choice = scanner.nextInt();
 
@@ -20,7 +24,11 @@ public class Menu {
                 financeMenu();
                 break;
             case 2:
-                transactionMenu();
+                incomeMenu();
+                financeMenu();
+                break;
+            case 3:
+                expenseMenu();
                 financeMenu();
                 break;
             default:
@@ -32,8 +40,9 @@ public class Menu {
     public void bankMenu(){
         System.out.println("Bank Account Menu\n ");
         System.out.println("1. Add Bank Account");
-        System.out.println( "2. Update Bank Account");
-        System.out.println("3. List Bank Account");
+        System.out.println("2. Bank Transactions");
+        System.out.println( "3. Update Bank Account");
+        System.out.println("4. List Bank Account");
         Scanner scanner = new Scanner(System.in);  
         Integer input = scanner.nextInt();
 
@@ -42,7 +51,8 @@ public class Menu {
                 bankAccountImpl.addBankAccount();
                 break;
             case 2:
-                bankAccountImpl.updateBankAccount();
+                accountTransactionImpl.listBankTransaction();
+                // bankAccountImpl.updateBankAccount();
                 break;  
             case 3: 
                 bankAccountImpl.listBankAccount();
@@ -54,20 +64,52 @@ public class Menu {
         }
     }
 
-
-    public void transactionMenu(){
-        System.out.println("Transaction Menu\n ");
-        System.out.println("1. Add Transaction");
-        System.out.println("2. List Transaction");
+    public void incomeMenu(){
+        System.out.println("Income Menu\n ");
+        System.out.println("1. Add Income Source");
+        System.out.println("2. Add Income");
+        System.out.println("3. Update Income");
+        System.out.println("4. List Income Sources");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
         switch (input) {
             case 1:
-                accountTransactionImpl.addTransaction();
+                incomeImpl.addIncomeSource();
                 break;
             case 2:
-                
+                incomeImpl.addIncome();
+                break;
+            case 3:
+                incomeImpl.updateIncome();
+                break;
+            case 4:
+                incomeImpl.listSources();
+                break;
+            default:
+                System.out.println("Invalid Choice");
+                break;
+        }
+    }
+
+    public void expenseMenu(){
+        System.out.println("Expense Menu\n ");
+        System.out.println("1. Add Expense Source");
+        System.out.println("1. Add Expense");
+        System.out.println("2. Update Expense");
+        System.out.println("3. List Expense");
+        Scanner scanner = new Scanner(System.in);
+        Integer input = scanner.nextInt();
+
+        switch (input) {
+            case 1:
+                //expenseImpl.addExpense();
+                break;
+            case 2:
+                //expenseImpl.updateExpense();
+                break;
+            case 3:
+                //expenseImpl.listExpense();
                 break;
             default:
                 System.out.println("Invalid Choice");
