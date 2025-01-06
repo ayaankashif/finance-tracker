@@ -2,6 +2,7 @@ package com.ayaan.FinanceTracker.service;
 
 import java.util.Scanner;
 
+import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 
 public class Menu {
@@ -10,25 +11,31 @@ public class Menu {
     IncomeImpl incomeImpl = new IncomeImpl();
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
     ExpenseImpl expenseImpl = new ExpenseImpl();
+    AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
 
     public void financeMenu() {
         System.out.println("\nFinance Tracker\n ");
-        System.out.println("1. Bank Account");
-        System.out.println("2. Income ");
-        System.out.println("3. Expense ");
+        System.out.println("1. Dashboard");
+        System.out.println("2. Bank Account");
+        System.out.println("3. Income ");
+        System.out.println("4. Expense ");
         Scanner scanner = new Scanner(System.in);
         Integer choice = scanner.nextInt();
 
         switch (choice) {
             case 1:
-                bankMenu();
+                dashboard();
                 financeMenu();
                 break;
             case 2:
-                incomeMenu();
+                bankMenu();
                 financeMenu();
                 break;
             case 3:
+                incomeMenu();
+                financeMenu();
+                break;
+            case 4:
                 expenseMenu();
                 financeMenu();
                 break;
@@ -53,12 +60,13 @@ public class Menu {
                 break;
             case 2:
                 accountTransactionImpl.listBankTransaction();
-                // bankAccountImpl.updateBankAccount();
                 break;
             case 3:
+                bankAccountImpl.updateBankAccount();
+                break;
+            case 4:
                 bankAccountImpl.listBankAccount();
                 break;
-
             default:
                 System.out.println("Invalid Choice");
                 break;
@@ -116,7 +124,7 @@ public class Menu {
             case 4:
                 expenseImpl.listExpense();
                 break;
-            case 5: 
+            case 5:
                 expenseImpl.listExpenseSources();
                 break;
             default:
@@ -125,4 +133,26 @@ public class Menu {
         }
     }
 
+    public void dashboard() {
+        System.out.println("\nDashboard:");
+        System.out.println("1. Bank Stats");
+        System.out.println("2. Monthly Credits");
+        System.out.println("3. Monthly Debits");
+        Scanner scanner = new Scanner(System.in);
+        Integer choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                accountTransactionImpl.bankStats();
+                break;
+            case 2:
+                accountTransactionImpl.monthlyCreditStats();
+                break;
+            case 3:
+                accountTransactionImpl.monhtlyDebitStats();
+                break;
+            default:
+                break;
+        }
+    }
 }

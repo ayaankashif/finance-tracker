@@ -23,7 +23,7 @@ public class ExpenseImpl {
             System.out.println("Name:");
             Scanner scanner = new Scanner(System.in);
             String name = scanner.nextLine();
-
+            
             System.out.println("Expense:");
             Double expense = scanner.nextDouble();
 

@@ -45,4 +45,70 @@ public class AccountTransactionImpl {
             e.printStackTrace(); 
         }
     }
+
+    public void bankStats(){
+        try {
+            List<Object[]> transaction = accountTransactionDAO.accountDashboard();
+            if (transaction == null || transaction.isEmpty()) {
+                System.out.println("Nothing to see ");
+                return;
+            }
+            System.out.println("\nDashboard: ");
+            System.out.println("Bank Name - Amount");
+            for (Object[] record : transaction) {
+                String bankName = (String) record[0];
+                Double transactionAmt = (Double) record[1];
+
+                System.out.println(bankName + " - " + transactionAmt);
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while fetching bank transactions.");
+            e.printStackTrace(); 
+        }
+    }
+
+    public void monthlyCreditStats(){
+        try {
+            List<Object[]> transaction = accountTransactionDAO.creditStats();
+            if (transaction == null || transaction.isEmpty()) {
+                System.out.println("No Bank Transactions Found.");
+                return;
+            }
+            System.out.println("\nCredit Amount\n");
+            System.out.println("Bank Name - Amount");
+            for (Object[] record : transaction) {
+                String bankName = (String) record[0];
+                Double transactionAmt = (Double) record[1];
+
+                System.out.println(bankName + " - " + transactionAmt);
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while fetching bank transactions.");
+            e.printStackTrace(); 
+        }
+    }
+
+    public void monhtlyDebitStats(){
+        try {
+            List<Object[]> transaction = accountTransactionDAO.debitStats();
+            if (transaction == null || transaction.isEmpty()) {
+                System.out.println("No Bank Transactions Found.");
+                return;
+            }
+            System.out.println("\nDebit Amount");
+            System.out.println("Bank Name - Amount");
+            for (Object[] record : transaction) {
+                String bankName = (String) record[0];
+                Double transactionAmt = (Double) record[1];
+
+                System.out.println(bankName + " - " + transactionAmt);
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while fetching bank transactions.");
+            e.printStackTrace(); 
+        }
+    }
 }

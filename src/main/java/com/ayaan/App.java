@@ -10,16 +10,11 @@ package com.ayaan;
 // import com.ayaan.FinanceTracker.service.BankAccountImpl;
 import com.ayaan.FinanceTracker.service.Menu;
 
-/**
- * Hello world!
- *
- */
 public class App {
     public static void main( String[] args ) {
 
         Menu menu = new Menu();
         menu.financeMenu();
-
 
        // IncomeImpl incomeImpl = new IncomeImpl();
         // incomeImpl.addIncome();
