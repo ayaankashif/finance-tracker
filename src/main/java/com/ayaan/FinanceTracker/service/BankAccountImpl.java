@@ -40,15 +40,15 @@ public class BankAccountImpl {
         try {
             List<BankAccount> bank = bankAccountDAO.getAllBankAccounts();
             System.out.println("Bank Account List: ");
-            bank.forEach(bankAccount -> System.out.println(
-                    bankAccount.getBankAccId() + " - " + bankAccount.getName() + " - " + bankAccount.getAccountDate()));
+            System.out.printf("%-15s %-14s %-15s%n",
+                    "Income ID", "Name", "Account Date");
+            System.out.println("--------------------------------------");
+            bank.forEach(bankAccount -> System.out.printf( "%-15s %-14s %-15s%n", 
+                    bankAccount.getBankAccId(), bankAccount.getName(), bankAccount.getAccountDate()));
         } catch (Exception e) {
             System.out.println("No Bank Account Found");
             e.printStackTrace();
         }
     }
-
-    
-
 
 }

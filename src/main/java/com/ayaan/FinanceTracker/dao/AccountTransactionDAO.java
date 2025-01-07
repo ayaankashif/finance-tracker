@@ -1,6 +1,8 @@
 package com.ayaan.FinanceTracker.dao;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -65,40 +67,38 @@ public class AccountTransactionDAO {
 
     public List<Object[]> getBankTransaction() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            YearMonth currentMonth = YearMonth.now(); 
+            LocalDate startDate = currentMonth.atDay(1);
+            LocalDate endDate = currentMonth.atEndOfMonth();
+
             String hql = "SELECT ba.name, at.transactionAmt, at.transactionType FROM AccountTransaction at " +
                          "JOIN at.bankAccId ba " +  
-                         "WHERE at.transactionDate BETWEEN :startDate AND :endDate";
+                         "WHERE at.transactionDate BETWEEN :startDate AND :endDate"; 
             return session.createQuery(hql, Object[].class)
-                          .setParameter("startDate", Date.valueOf("2025-01-01"))
-                          .setParameter("endDate", Date.valueOf("2025-01-31"))
+                          .setParameter("startDate", Date.valueOf(startDate))
+                          .setParameter("endDate", Date.valueOf(endDate))
                           .list();
         }
     }
 
     public List<Object[]> accountDashboard() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "SELECT ba.name, sum(at.transactionAmt) FROM AccountTransaction at " +
+            String hql = "SELECT ba.bankAccId, ba.name, sum(at.transactionAmt) FROM AccountTransaction at " +
                          "JOIN at.bankAccId ba " +  
                          "GROUP BY at.bankAccId";
             return session.createQuery(hql, Object[].class).list();
         }
     }
 
-    public List<Object[]> creditStats() {
+    public List<Object[]> monthlyStats(String type) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "SELECT ba.name, at.transactionAmt FROM AccountTransaction at " +
-                         "JOIN at.bankAccId ba " +  
-                         "WHERE at.transactionType = 'Credit' ";
-            return session.createQuery(hql, Object[].class).list();
-        }
-    }
-
-    public List<Object[]> debitStats() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "SELECT ba.name, at.transactionAmt FROM AccountTransaction at " +
-                         "JOIN at.bankAccId ba " +  
-                         "WHERE at.transactionType = 'Debit' ";
-            return session.createQuery(hql, Object[].class).list();
+                         "JOIN at.bankAccId ba " + 
+                         "WHERE at.transactionType = :type ";
+            return session.createQuery(hql, Object[].class)
+                            .setParameter("type", type)
+                            .list();
         }
     }
 

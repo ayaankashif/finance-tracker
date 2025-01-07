@@ -9,6 +9,7 @@ import com.ayaan.FinanceTracker.models.BankAccount;
 public class AccountTransactionImpl {
 
     AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
+    AccountTransaction accountTransaction = new AccountTransaction();
 
     public void addTransaction(BankAccount bankAccount, String transactionType, Double transactionAmount) {
         try {
@@ -31,13 +32,15 @@ public class AccountTransactionImpl {
                 return;
             }
             System.out.println("\nBank Transaction List:");
-            System.out.println("Bank Name - Amount - Transaction Type");
+            System.out.printf("%-15s %-15s %-15s%n",
+                "Bank Name", "Amount", "Transaction Type");
+            System.out.println("------------------------------------------");
             for (Object[] record : transaction) {
                 String bankName = (String) record[0];
                 Double transactionAmt = (Double) record[1];
                 String transactionType = (String) record[2];
 
-                System.out.println(bankName + " - " + transactionAmt + " - " + transactionType);
+                System.out.printf("%-15s %-15s %-15s%n", bankName, transactionAmt, transactionType);
             }
 
         } catch (Exception e) {
@@ -54,12 +57,20 @@ public class AccountTransactionImpl {
                 return;
             }
             System.out.println("\nDashboard: ");
-            System.out.println("Bank Name - Amount");
+            System.out.printf("%-12s %-17s %-15s%n",
+                "Bank ID ", "Bank Name ", "Amount");
+            System.out.println("-----------------------------------");
             for (Object[] record : transaction) {
-                String bankName = (String) record[0];
-                Double transactionAmt = (Double) record[1];
+                Integer BankId = (Integer) record [0];
+                String bankName = (String) record[1];
+                Double transactionAmt  =  (Double) record[2];
 
-                System.out.println(bankName + " - " + transactionAmt);
+                if (transactionAmt < 0 ){
+                    transactionAmt  = 0.0;
+                }
+                
+                System.out.printf("%-12s %-17s %-15s%n" , 
+                            BankId, bankName, transactionAmt);
             }
 
         } catch (Exception e) {
@@ -70,18 +81,20 @@ public class AccountTransactionImpl {
 
     public void monthlyCreditStats(){
         try {
-            List<Object[]> transaction = accountTransactionDAO.creditStats();
+            List<Object[]> transaction = accountTransactionDAO.monthlyStats("Credit");
             if (transaction == null || transaction.isEmpty()) {
                 System.out.println("No Bank Transactions Found.");
                 return;
             }
             System.out.println("\nCredit Amount\n");
-            System.out.println("Bank Name - Amount");
+            System.out.printf("%-12s %-17s%n",
+                "Bank Name", "Amount");
+            System.out.println("-------------------------");
             for (Object[] record : transaction) {
                 String bankName = (String) record[0];
                 Double transactionAmt = (Double) record[1];
 
-                System.out.println(bankName + " - " + transactionAmt);
+                System.out.printf("%-12s %-17s%n", bankName, transactionAmt);
             }
 
         } catch (Exception e) {
@@ -92,18 +105,20 @@ public class AccountTransactionImpl {
 
     public void monhtlyDebitStats(){
         try {
-            List<Object[]> transaction = accountTransactionDAO.debitStats();
+            List<Object[]> transaction = accountTransactionDAO.monthlyStats("Debit");
             if (transaction == null || transaction.isEmpty()) {
                 System.out.println("No Bank Transactions Found.");
                 return;
             }
             System.out.println("\nDebit Amount");
-            System.out.println("Bank Name - Amount");
+            System.out.printf("%-12s %-17s%n",
+                "Bank Name", "Amount");
+            System.out.println("-------------------------");
             for (Object[] record : transaction) {
                 String bankName = (String) record[0];
                 Double transactionAmt = (Double) record[1];
 
-                System.out.println(bankName + " - " + transactionAmt);
+                System.out.printf("%-12s %-17s%n", bankName, transactionAmt);
             }
 
         } catch (Exception e) {
@@ -111,4 +126,8 @@ public class AccountTransactionImpl {
             e.printStackTrace(); 
         }
     }
+
+    
+
+
 }

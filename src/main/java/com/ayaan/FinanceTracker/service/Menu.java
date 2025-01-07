@@ -19,6 +19,7 @@ public class Menu {
         System.out.println("2. Bank Account");
         System.out.println("3. Income ");
         System.out.println("4. Expense ");
+        System.out.println("5. Exit");
         Scanner scanner = new Scanner(System.in);
         Integer choice = scanner.nextInt();
 
@@ -39,8 +40,12 @@ public class Menu {
                 expenseMenu();
                 financeMenu();
                 break;
+            case 5: 
+                System.out.println("Exiting the finance Tracker.");
+                break;
             default:
                 System.out.println("Invalid Choice");
+                financeMenu();
                 break;
         }
     }
@@ -78,7 +83,8 @@ public class Menu {
         System.out.println("1. Add Income Source");
         System.out.println("2. Add Income");
         System.out.println("3. Update Income");
-        System.out.println("4. List Income Sources");
+        System.out.println("4. List Income ");
+        System.out.println("5. List Income Sources");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
@@ -93,6 +99,9 @@ public class Menu {
                 incomeImpl.updateIncome();
                 break;
             case 4:
+                incomeImpl.listIncome();
+                break;
+            case 5:
                 incomeImpl.listSources();
                 break;
             default:
