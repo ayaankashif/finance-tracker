@@ -46,6 +46,11 @@ public class AccountTransaction {
         this(bankAccId, transactionType, transactionAmt, transactionDate);
         this.transactionId = transactionId;
     }
+
+    public AccountTransaction(BankAccount bankAccount, Double transactionAmt){
+        this.bankAccId = bankAccount;
+        this.transactionAmt = transactionAmt;
+    }
     
     public Date getTransactionDate() {
         return transactionDate;

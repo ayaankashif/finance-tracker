@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.dao.ExpenseDAO;
 import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
+import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.models.Expense;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
@@ -17,15 +18,19 @@ public class ExpenseImpl {
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
     AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
     ExpenseDAO expenseDAO = new ExpenseDAO();
+    AccountTransaction accountTransaction = new AccountTransaction();
 
     public void addExpense() {
         try {
             System.out.println("Name:");
             Scanner scanner = new Scanner(System.in);
             String name = scanner.nextLine();
-            
+
             System.out.println("Expense:");
             Double expense = scanner.nextDouble();
+            if (expense > 0) {
+                expense = -expense;
+            }
 
             BankAccount bankAccount = null;
             while (bankAccount == null) {
@@ -42,17 +47,20 @@ public class ExpenseImpl {
                 System.out.println("Expense Source:");
                 String expenseSource = scanner.nextLine();
                 incomeExpenseSources = incomeExpenseSourcesDAO.getIncomeExpenseSourceByCondition(expenseSource);
-                if (incomeExpenseSources == null ) {
+                if (incomeExpenseSources == null) {
                     System.out.println("No Expense source found.");
                 }
             }
 
-            Expense expense1 = new Expense(name, bankAccount, expense, incomeExpenseSources, incomeExpenseSources.getIncomeExpenseSource(), 
+            Expense expense1 = new Expense(name, bankAccount, expense, incomeExpenseSources,
+                    incomeExpenseSources.getIncomeExpenseSource(),
                     new Date(System.currentTimeMillis()));
 
             accountTransactionImpl.addTransaction(bankAccount, "Debit", expense);
+            accountTransaction.setTransactionAmt(accountTransaction.getTransactionAmt() + expense);
 
             expenseDAO.saveExpense(expense1);
+
             System.out.println("\nExpense added successfully");
 
         } catch (Exception e) {
@@ -61,7 +69,7 @@ public class ExpenseImpl {
         }
     }
 
-    public void updateExpense(){
+    public void updateExpense() {
         System.out.println("Name: ");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
@@ -90,7 +98,8 @@ public class ExpenseImpl {
 
         System.out.println("Expense ID: ");
         Integer id = scanner.nextInt();
-        Expense expense = new Expense(id, name, bankAccount, expens, incomeExpenseSources, incomeExpenseSources.getIncomeExpenseSource(),
+        Expense expense = new Expense(id, name, bankAccount, expens, incomeExpenseSources,
+                incomeExpenseSources.getIncomeExpenseSource(),
                 new Date(System.currentTimeMillis()));
         expenseDAO.updateExpense(expense);
     }
@@ -105,13 +114,13 @@ public class ExpenseImpl {
     public void listExpenseSources() {
         try {
             List<IncomeExpenseSources> sources = incomeExpenseSourcesDAO.getAllIncomeExpenseSources('E');
-            System.out.println("\nIncome/Expense Sources List: ");
+            System.out.println("\nExpense Sources List: ");
             System.out.printf("%-15s%n",
-             "Sources");
+                    "Sources");
             System.out.println("------------");
 
             sources.forEach(incomeExpenseSources -> System.out.printf("%-15s%n",
-            incomeExpenseSources.getIncomeExpenseSource()));
+                    incomeExpenseSources.getIncomeExpenseSource()));
         } catch (Exception e) {
             System.out.println("No Sources Found");
             e.printStackTrace();
@@ -121,23 +130,18 @@ public class ExpenseImpl {
     public void listExpense() {
         try {
             List<Expense> expenses = expenseDAO.getAllExpense();
-            System.out.println("\nIncome/Expense Sources List: ");
-            System.out.printf("%-12s %-17s %-15s%n",
-            "Expense ID", "Name", "Expense");
+            System.out.println("\nExpenses List: ");
+            System.out.printf("%-17s %-15s%n",
+                     "Source", "Expense");
             System.out.println("----------------------------------------------");
 
-            expenses.forEach(expense -> System.out.printf("%-12s %-17s %-15s%n",
-            expense.getExpenseId(),
-            expense.getName(),
-            expense.getExpense() ));
+            expenses.forEach(expense -> System.out.printf("%-17s %-15s%n",
+                    expense.getExpenseSources(),
+                    expense.getExpense()));
         } catch (Exception e) {
             System.out.println("No Expense Found");
             e.printStackTrace();
         }
     }
-
-
-    
-
 
 }
