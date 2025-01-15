@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
+import com.ayaan.FinanceTracker.dao.BudgetTrackerDAO;
 import com.ayaan.FinanceTracker.dao.ExpenseDAO;
 import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
+import com.ayaan.FinanceTracker.models.BudgetTracker;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.models.Expense;
@@ -19,6 +21,7 @@ public class ExpenseImpl {
     AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
     ExpenseDAO expenseDAO = new ExpenseDAO();
     AccountTransaction accountTransaction = new AccountTransaction();
+    BudgetTrackerDAO budgetTrackerDAO = new BudgetTrackerDAO();
 
     public void addExpense() {
         try {
@@ -53,7 +56,6 @@ public class ExpenseImpl {
             }
 
             Expense expense1 = new Expense(name, bankAccount, expense, incomeExpenseSources,
-                    incomeExpenseSources.getIncomeExpenseSource(),
                     new Date(System.currentTimeMillis()));
 
             accountTransactionImpl.addTransaction(bankAccount, "Debit", expense);
@@ -84,7 +86,10 @@ public class ExpenseImpl {
             }
         }
         System.out.println("Expense");
-        Double expens = scanner.nextDouble();
+        Double exp = scanner.nextDouble();
+        if (exp > 0) {
+            exp = -exp;
+        }
 
         IncomeExpenseSources incomeExpenseSources = null;
         while (incomeExpenseSources == null) {
@@ -98,17 +103,39 @@ public class ExpenseImpl {
 
         System.out.println("Expense ID: ");
         Integer id = scanner.nextInt();
-        Expense expense = new Expense(id, name, bankAccount, expens, incomeExpenseSources,
-                incomeExpenseSources.getIncomeExpenseSource(),
+        Expense ex = expenseDAO.getExpensebyId(id);
+        if (ex == null) {
+            System.out.println("No expense with this ID");
+        }
+        
+        ex.setExpense(ex.getExpense() + exp);
+
+        Expense expense = new Expense(id, name, bankAccount, exp, incomeExpenseSources,
                 new Date(System.currentTimeMillis()));
+
+        accountTransactionImpl.addTransaction(bankAccount, "Debit", exp);
+        accountTransaction.setTransactionAmt(accountTransaction.getTransactionAmt() + exp);
+
         expenseDAO.updateExpense(expense);
+        expenseDAO.updateExpense(ex);
     }
 
     public void addExpenseSource() {
         System.out.println("Expense Source:");
         Scanner scanner = new Scanner(System.in);
         String expenseSource = scanner.nextLine();
-        incomeExpenseSourcesImpl.addIncomeExpenseSource(expenseSource, 'E');
+
+        BudgetTracker budgetTracker = null;
+        while (budgetTracker == null) {
+            System.out.println("Enter your budget Name to link this source: ");
+            String name = scanner.nextLine();
+            budgetTracker = budgetTrackerDAO.getBudgetByCondition(name);
+            if (budgetTracker == null) {
+                System.out.println("Error, no budget found ");
+            }
+        }
+
+        incomeExpenseSourcesImpl.addIncomeExpenseSource(expenseSource, 'E', budgetTracker);
     }
 
     public void listExpenseSources() {
@@ -132,12 +159,13 @@ public class ExpenseImpl {
             List<Expense> expenses = expenseDAO.getAllExpense();
             System.out.println("\nExpenses List: ");
             System.out.printf("%-17s %-15s%n",
-                     "Source", "Expense");
+                    "Source", "Expense");
             System.out.println("----------------------------------------------");
 
             expenses.forEach(expense -> System.out.printf("%-17s %-15s%n",
-                    expense.getExpenseSources(),
+                    expense.getExpenseSourceId().getIncomeExpenseSource(),
                     expense.getExpense()));
+
         } catch (Exception e) {
             System.out.println("No Expense Found");
             e.printStackTrace();

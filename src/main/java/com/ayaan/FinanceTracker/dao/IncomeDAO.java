@@ -8,6 +8,9 @@ import org.hibernate.Transaction;
 import com.ayaan.FinanceTracker.models.Income;
 import com.ayaan.FinanceTracker.util.HibernateUtil;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
+
 public class IncomeDAO {
 
     public void saveIncome(Income income) {
@@ -68,6 +71,33 @@ public class IncomeDAO {
         }
     }
 
-    
+    public Double getIncomes() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT SUM(i.income) FROM Income i";
+            return session.createQuery(hql, Double.class).uniqueResult(); 
+        }
+    }
 
+    public Double getIncomeBySourceFromIncomes(String source) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT i.income FROM Income i " +
+                         "JOIN i.incomeSources ies " +
+                         "WHERE ies.incomeExpenseSource = :source";
+            Query query = session.createQuery(hql);
+            query.setParameter("source", source);
+
+            try {
+                return (Double) query.getSingleResult();
+                
+            } catch (NoResultException e) {
+                System.out.println("No income found for the given source.");
+                return null;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 }

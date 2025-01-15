@@ -32,6 +32,7 @@ public class AccountTransaction {
     @Column(name = "transaction_date")
     private  Date  transactionDate;
 
+    
     public AccountTransaction() {
     }
 

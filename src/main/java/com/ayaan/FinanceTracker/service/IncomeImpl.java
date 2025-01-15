@@ -13,19 +13,23 @@ import com.ayaan.FinanceTracker.models.Income;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 
 public class IncomeImpl {
-    
+
     IncomeDAO incomeDAO = new IncomeDAO();
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
     AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
     IncomeExpenseSourcesImpl incomeExpenseSourcesImpl = new IncomeExpenseSourcesImpl();
-    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAO();    
+    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAO();
     AccountTransaction accountTransaction = new AccountTransaction();
+    IncomeExpenseSources incomeExpenseSources = new IncomeExpenseSources();
 
     public void addIncome() {
         try {
             System.out.println("Name: ");
             Scanner scanner = new Scanner(System.in);
             String name = scanner.nextLine();
+            incomeExpenseSources.setIncomeExpenseSource(name);
+            incomeExpenseSources.setType('I');
+            incomeExpenseSourcesDAO.saveIncomeExpenseSource(incomeExpenseSources);
 
             BankAccount bankAccount = null;
             while (bankAccount == null) {
@@ -36,6 +40,7 @@ public class IncomeImpl {
                     System.out.println("\nError: No Bank account found. Please enter a valid bank account name.");
                 }
             }
+
             IncomeExpenseSources incomeExpenseSources = null;
             while (incomeExpenseSources == null) {
                 System.out.println("Income Source: ");
@@ -45,13 +50,19 @@ public class IncomeImpl {
                     System.out.println("\nError: No Income Source found.");
                 }
             }
+
             System.out.println("Income: ");
             Double income = scanner.nextDouble();
             accountTransaction.setTransactionAmt(accountTransaction.getTransactionAmt() + income);
 
-            Income income1 = new Income(name, bankAccount, income, incomeExpenseSources.getIncomeExpenseSource(), new Date(System.currentTimeMillis()));
+            Income income1 = new Income(name, bankAccount, income, incomeExpenseSources,
+                    new Date(System.currentTimeMillis()));
             accountTransactionImpl.addTransaction(bankAccount, "Credit", income);
+
             incomeDAO.saveIncome(income1);
+
+            BudgetTrackerService budgetTrackerService = new BudgetTrackerService();
+            budgetTrackerService.calculateBudget(income);
 
             System.out.println("\nIncome added successfully");
 
@@ -62,19 +73,20 @@ public class IncomeImpl {
     }
 
     public void updateIncome() {
-        System.out.println("Name: ");
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Name: ");
         String name = scanner.nextLine();
 
         BankAccount bankAccount = null;
-            while (bankAccount == null) {
-                System.out.println("Bank Account: ");
-                String bankAcc = scanner.nextLine();
-                bankAccount = bankAccountDAO.getBankAccountByCondition(bankAcc);
-                if (bankAccount == null) {
-                    System.out.println("\nError: No Bank account found. Please enter a valid bank account name.");
-                }
+        while (bankAccount == null) {
+            System.out.println("Bank Account: ");
+            String bankAcc = scanner.nextLine();
+            bankAccount = bankAccountDAO.getBankAccountByCondition(bankAcc);
+            if (bankAccount == null) {
+                System.out.println("\nError: No Bank account found. Please enter a valid bank account name.");
             }
+        }
 
         System.out.println("Income: ");
         Double income = scanner.nextDouble();
@@ -91,15 +103,32 @@ public class IncomeImpl {
 
         System.out.println("Income ID: ");
         Integer id = scanner.nextInt();
-        Income income1 = new Income(id, name, bankAccount, income, incomeExpenseSources.getIncomeExpenseSource(), new Date(System.currentTimeMillis()));
+        Income existingIncome = incomeDAO.getIncomebyId(id);
+        if (existingIncome == null) {
+            System.out.println("No Income found with this ID");
+        }
+        System.out.println("adding " + income + " to " + existingIncome.getIncome());
+
+        Double updatedAmount = existingIncome.getIncome() + income;
+        existingIncome.setIncome(updatedAmount);
+
+        System.out.println("Updated Total Income: " + updatedAmount);
+        
+        Income income1 = new Income(id, name, bankAccount, income, incomeExpenseSources,
+                new Date(System.currentTimeMillis()));
+
+        accountTransaction.setTransactionAmt(accountTransaction.getTransactionAmt() + income);
+        accountTransactionImpl.addTransaction(bankAccount, "Credit", income);
+
         incomeDAO.updateIncome(income1);
+        incomeDAO.updateIncome(existingIncome); 
     }
 
-    public void addIncomeSource(){
+    public void addIncomeSource() {
         System.out.println("Income Source: ");
-        Scanner scanner = new Scanner(System.in);
-        String incomeSource = scanner.nextLine();
-        incomeExpenseSourcesImpl.addIncomeExpenseSource(incomeSource, 'I');
+        // Scanner scanner = new Scanner(System.in);
+        // String incomeSource = scanner.nextLine();
+        // incomeExpenseSourcesImpl.addIncomeExpenseSource(incomeSource, 'I');
     }
 
     public void listSources() {
@@ -109,7 +138,7 @@ public class IncomeImpl {
             System.out.printf("%-15s%n",
                     "Sources");
             System.out.println("-------------");
-            sources.forEach(incomeExpenseSources -> System.out.printf( "%-15s%n", 
+            sources.forEach(incomeExpenseSources -> System.out.printf("%-15s%n",
                     incomeExpenseSources.getIncomeExpenseSource()));
         } catch (Exception e) {
             System.out.println("No Sources Found");
@@ -117,7 +146,7 @@ public class IncomeImpl {
         }
     }
 
-    public void listIncome(){
+    public void listIncome() {
         try {
             List<Income> incomes = incomeDAO.getAllIncome();
             System.out.println("\nIncomes List: ");
@@ -127,15 +156,12 @@ public class IncomeImpl {
             incomes.forEach(income -> System.out.printf("%-12s %-17s %-15s %-15s%n",
                     income.getIncomeId(),
                     income.getName(),
-                    income.getIncome(),
-                    income.getIncomeSources()
-                    ));
+                    income.getIncomeSources().getIncomeExpenseSource(),
+                    income.getIncome()));
 
         } catch (Exception e) {
             System.out.println("No Expense Found");
             e.printStackTrace();
         }
     }
-
 }
-

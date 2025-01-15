@@ -8,6 +8,9 @@ import org.hibernate.Transaction;
 import com.ayaan.FinanceTracker.models.Expense;
 import com.ayaan.FinanceTracker.util.HibernateUtil;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
+
 public class ExpenseDAO {
 
     public void saveExpense(Expense expense) {
@@ -65,6 +68,42 @@ public class ExpenseDAO {
     public List<Expense> getAllExpense() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from Expense", Expense.class).list();
+        }
+    }
+
+    public Double getExpenses() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT e.expense FROM Expense e ";
+            return session.createQuery(hql, Double.class).uniqueResult(); 
+        }
+    }
+
+    public Double getExpenseBySourceFromExpense(String source) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT e.expense FROM Expense e " +
+                         "JOIN e.incomeExpenseSourceId ies " +
+                         "WHERE ies.incomeExpenseSource = :source";
+            Query query = session.createQuery(hql);
+            query.setParameter("source", source);
+
+            try {
+                return (Double) query.getSingleResult();
+                
+            } catch (NoResultException e) {
+                System.out.println("No income found for the given source.");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Double getExpensesBySourceId(Integer id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT e.expense FROM Expense e " + 
+                        "JOIN e.incomeExpenseSourceId bt ";
+            return session.createQuery(hql, Double.class).uniqueResult(); 
         }
     }
 }
