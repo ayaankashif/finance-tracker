@@ -25,10 +25,11 @@ public class Income {
     private  BankAccount bankAccId;
     
     @Column(name = "income")
-    private double income;
-    
-    @Column(name = "income_sources") 
-    private String incomeSources;
+    private Double income;
+
+    @ManyToOne
+    @JoinColumn(name = "income_sources") 
+    private IncomeExpenseSources incomeSources;
     
     @Column(name = "income_date")
     private Date date;
@@ -37,7 +38,7 @@ public class Income {
         
     }
 
-    public Income(String name, BankAccount bankAccId, double income, String incomeSources, Date date) {
+    public Income(String name, BankAccount bankAccId, Double income, IncomeExpenseSources incomeSources, Date date) {
         this.name = name;
         this.bankAccId = bankAccId;
         this.income = income;
@@ -45,7 +46,7 @@ public class Income {
         this.date = date;
     }
 
-    public Income(Integer incomeId, String name, BankAccount bankAccId, double income, String incomeSources, Date date) {
+    public Income(Integer incomeId, String name, BankAccount bankAccId, Double income, IncomeExpenseSources incomeSources, Date date) {
         this(name, bankAccId, income, incomeSources, date);
         this.incomeId = incomeId;
     }
@@ -74,19 +75,19 @@ public class Income {
         this.bankAccId = bankAccId;
     }
 
-    public double getIncome() {
+    public Double getIncome() {
         return income;
     }
 
-    public void setIncome(double income) {
+    public void setIncome(Double income) {
         this.income = income;
     }
 
-    public String getIncomeSources() {
+    public IncomeExpenseSources getIncomeSources() {
         return incomeSources;
     }
 
-    public void setIncomeSources(String incomeSources) {
+    public void setIncomeSources(IncomeExpenseSources incomeSources) {
         this.incomeSources = incomeSources;
     }
 

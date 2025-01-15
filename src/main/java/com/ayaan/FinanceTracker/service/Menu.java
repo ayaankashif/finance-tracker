@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
+import com.ayaan.FinanceTracker.models.Income;
 
 public class Menu {
     BankAccountImpl bankAccountImpl = new BankAccountImpl();
@@ -11,7 +12,9 @@ public class Menu {
     IncomeImpl incomeImpl = new IncomeImpl();
     BankAccountDAO bankAccountDAO = new BankAccountDAO();
     ExpenseImpl expenseImpl = new ExpenseImpl();
+    Income income = new Income();
     AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
+    BudgetTrackerService budgetTrackerService = new BudgetTrackerService();
 
     public void financeMenu() {
         System.out.println("\nFinance Tracker\n ");
@@ -19,7 +22,8 @@ public class Menu {
         System.out.println("2. Bank Account");
         System.out.println("3. Income ");
         System.out.println("4. Expense ");
-        System.out.println("5. Exit");
+        System.out.println("5. Budget Tracker");
+        System.out.println("6. Exit");
         Scanner scanner = new Scanner(System.in);
         Integer choice = scanner.nextInt();
 
@@ -40,7 +44,11 @@ public class Menu {
                 expenseMenu();
                 financeMenu();
                 break;
-            case 5: 
+            case 5:
+                budgetTracker();
+                financeMenu();
+                break;
+            case 6:
                 System.out.println("Exiting the finance Tracker.");
                 break;
             default:
@@ -56,6 +64,7 @@ public class Menu {
         System.out.println("2. Bank Transactions");
         System.out.println("3. Update Bank Account");
         System.out.println("4. List Bank Account");
+        System.out.println("5. Back to finance Tracker");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
@@ -72,6 +81,9 @@ public class Menu {
             case 4:
                 bankAccountImpl.listBankAccount();
                 break;
+            case 5:
+                financeMenu();
+                break;
             default:
                 System.out.println("Invalid Choice");
                 break;
@@ -85,6 +97,7 @@ public class Menu {
         System.out.println("3. Update Income");
         System.out.println("4. List Income ");
         System.out.println("5. List Income Sources");
+        System.out.println("6. Back to finance Tracker");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
@@ -104,6 +117,9 @@ public class Menu {
             case 5:
                 incomeImpl.listSources();
                 break;
+            case 6:
+                financeMenu();
+                break;
             default:
                 System.out.println("Invalid Choice");
                 break;
@@ -117,6 +133,7 @@ public class Menu {
         System.out.println("3. Update Expense");
         System.out.println("4. List Expense");
         System.out.println("5. List Expense Sources");
+        System.out.println("6. Back to finance Tracker");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
@@ -136,6 +153,9 @@ public class Menu {
             case 5:
                 expenseImpl.listExpenseSources();
                 break;
+            case 6:
+                financeMenu();
+                break;
             default:
                 System.out.println("Invalid Choice");
                 break;
@@ -147,6 +167,7 @@ public class Menu {
         System.out.println("1. Bank Stats");
         System.out.println("2. Monthly Credits");
         System.out.println("3. Monthly Debits");
+        System.out.println("4. Back to finance Tracker");
         Scanner scanner = new Scanner(System.in);
         Integer choice = scanner.nextInt();
 
@@ -160,8 +181,47 @@ public class Menu {
             case 3:
                 accountTransactionImpl.monhtlyDebitStats();
                 break;
+            case 4:
+                financeMenu();
+                break;
             default:
                 break;
         }
     }
+
+    public void budgetTracker() {
+        System.out.println("\nBudget Tracker:");
+        System.out.println("1. Budget Overview");
+        System.out.println("2. Income Overview");
+        System.out.println("3. Expense Overview");
+        System.out.println("4. Set your Monthly Goal");
+        System.out.println("5. Set you monthly Budget");
+        System.out.println("6. Back to finance Tracker");
+        Scanner scanner = new Scanner(System.in);
+        Integer choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                budgetTrackerService.budgetOverview();
+                break;
+            case 2:
+                budgetTrackerService.IncomeOverviewDisplay();
+                break;
+            case 3:
+                budgetTrackerService.expenseOverviewDisplay();
+                break;
+            case 4:
+                budgetTrackerService.incomeOverview();
+                break;
+            case 5:
+                budgetTrackerService.expenseOverview();
+                break;
+            case 6:
+                financeMenu();
+                break;
+            default:
+                break;
+        }
+    }
+
 }

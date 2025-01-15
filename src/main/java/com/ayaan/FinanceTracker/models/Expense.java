@@ -33,9 +33,6 @@ public class Expense {
     @Column(name = "expense")
     private double expense;
 
-    @Column(name = "expense_source")
-    private String expenseSources;
-
     @Column(name = "expense_date")
     private Date date;
 
@@ -43,17 +40,16 @@ public class Expense {
         
     }
 
-    public Expense(String name, BankAccount bankAccId, double expense, IncomeExpenseSources incomeExpenseSource, String expenseSources, Date date) {
+    public Expense(String name, BankAccount bankAccId, double expense, IncomeExpenseSources incomeExpenseSource, Date date) {
         this.name = name;
         this.bankAccId = bankAccId;
         this.expense = expense;
         this.incomeExpenseSourceId = incomeExpenseSource;
-        this.expenseSources = expenseSources;
         this.date = date;
     }
 
-    public Expense(Integer expenseId, String name, BankAccount bankAccId, double expense, IncomeExpenseSources incomeExpenseSource, String expenseSources, Date date) {
-        this(name, bankAccId, expense, incomeExpenseSource, expenseSources, date);
+    public Expense(Integer expenseId, String name, BankAccount bankAccId, double expense, IncomeExpenseSources incomeExpenseSource, Date date) {
+        this(name, bankAccId, expense, incomeExpenseSource, date);
         this.expenseId = expenseId; 
     }
 
@@ -86,12 +82,6 @@ public class Expense {
     }
     public void setExpense(double expense) {
         this.expense = expense;
-    }
-    public String getExpenseSources() {
-        return expenseSources;
-    }
-    public void setExpenseSources(String expenseSources) {
-        this.expenseSources = expenseSources;
     }
     public Date getDate() {
         return date;

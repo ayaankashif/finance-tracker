@@ -1,10 +1,15 @@
 package com.ayaan.FinanceTracker.models;
 
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+// import jakarta.persistence.JoinColumn;
+// import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,20 +19,32 @@ public class BudgetTracker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "budget_tracker_id")
     private Integer budgetTrackerId ;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "budget_percentage")
-    private Integer budgetPercentage;
-    @Column(name = "monthly_budget")
-    private double monthlyBudget;
-    @Column(name = "current_month")
-    private double currentMonth;
-    @Column(name = "remaining")
-    private double remaining;
+    private Double budgetPercentage;
+
+    @Transient
+    private Double remaining;
+
+    @Transient
+    private Double progress;
+
 
     public BudgetTracker(){
         
     }
+
+    
+    public BudgetTracker(String name, Double remaining, Double budgetPercentage, Double progress){
+        this.name = name;
+        this.budgetPercentage = budgetPercentage;
+        this.remaining = remaining;
+        this.progress = progress;
+    }
+
 
     public Integer getBudgetTrackerId() {
         return budgetTrackerId;
@@ -42,28 +59,22 @@ public class BudgetTracker {
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getBudgetPercentage() {
+    public Double getBudgetPercentage() {
         return budgetPercentage;
     }
-    public void setBudgetPercentage(Integer budgetPercentage) {
+    public void setBudgetPercentage(Double budgetPercentage) {
         this.budgetPercentage = budgetPercentage;
     }
-    public double getMonthlyBudget() {
-        return monthlyBudget;
-    }
-    public void setMonthlyBudget(double monthlyBudget) {
-        this.monthlyBudget = monthlyBudget;
-    }
-    public double getCurrentMonth() {
-        return currentMonth;
-    }
-    public void setCurrentMonth(double currentMonth) {
-        this.currentMonth = currentMonth;
-    }
-    public double getRemaining() {
+    public Double getRemaining() {
         return remaining;
     }
-    public void setRemaining(double remaining) {
+    public void setRemaining(Double remaining) {
         this.remaining = remaining;
+    }
+    public Double getProgress() {
+        return progress;
+    }
+    public void setProgress(Double progress) {
+        this.progress = progress;
     }
 }
