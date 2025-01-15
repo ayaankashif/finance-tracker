@@ -1,28 +1,27 @@
 package com.ayaan.FinanceTracker.service;
 
-import java.util.Currency;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.ayaan.FinanceTracker.dao.BudgetTrackerDAO;
-import com.ayaan.FinanceTracker.dao.ExpenseDAO;
-import com.ayaan.FinanceTracker.dao.IncomeDAO;
-import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
 import com.ayaan.FinanceTracker.models.Expense;
+import com.ayaan.FinanceTracker.daoImpl.BudgetTrackerDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.ExpenseDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.IncomeDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BudgetTracker;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 
 public class BudgetTrackerService {
 
-    IncomeImpl incomeImpl = new IncomeImpl();
-    IncomeExpenseSourcesImpl incomeExpenseSourcesImpl = new IncomeExpenseSourcesImpl();
+    IncomeService incomeImpl = new IncomeService();
+    IncomeExpenseSourcesService incomeExpenseSourcesImpl = new IncomeExpenseSourcesService();
     IncomeExpenseSources incomeExpenseSources = new IncomeExpenseSources();
-    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAO();
-    BudgetTrackerDAO budgetTrackerDAO = new BudgetTrackerDAO();
-    IncomeDAO incomeDAO = new IncomeDAO();
-    ExpenseDAO expenseDAO = new ExpenseDAO();
+    IncomeExpenseSourcesDAOImpl incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
+    BudgetTrackerDAOImpl budgetTrackerDAO = new BudgetTrackerDAOImpl();
+    IncomeDAOImpl incomeDAO = new IncomeDAOImpl();
+    ExpenseDAOImpl expenseDAO = new ExpenseDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
 
     public void incomeOverview() {
@@ -94,18 +93,6 @@ public class BudgetTrackerService {
         System.out.println("Budget % :  ");
         Double budget = scanner.nextDouble();
 
-        // String expenseSource = null;
-        // IncomeExpenseSources incomeExpenseSources = null;
-        // while (incomeExpenseSources == null) {
-        // System.out.println("Link it one of your expense Source: ");
-        // expenseSource = scanner.nextLine();
-        // incomeExpenseSources =
-        // incomeExpenseSourcesDAO.getIncomeExpenseSourceByCondition(expenseSource);
-        // if (incomeExpenseSources == null) {
-        // System.out.println("\nError: No Income Source found.");
-        // }
-        // }
-
         BudgetTracker budgetTracker = new BudgetTracker(
                 name,
                 null,
@@ -144,17 +131,6 @@ public class BudgetTrackerService {
                 scanner.nextLine();
             }
         }
-
-        // String name = null;
-        // BudgetTracker budgetTracker = null;
-        // while (budgetTracker == null) {
-        // System.out.println("Enter your Budget Name: ");
-        // name = scanner.nextLine();
-        // budgetTracker = budgetTrackerDAO.getBudgetByCondition(name);
-        // if (budgetTracker == null) {
-        // System.out.println("Error: No Budget Found ");
-        // }
-        // }
 
         incomeExpenseSourcesImpl.monthlyGoal(expenseSource, budget);
         Double expenseValue = expenseDAO.getExpenseBySourceFromExpense(expenseSource);

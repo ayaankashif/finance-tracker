@@ -4,24 +4,24 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import com.ayaan.FinanceTracker.dao.BankAccountDAO;
-import com.ayaan.FinanceTracker.dao.BudgetTrackerDAO;
-import com.ayaan.FinanceTracker.dao.ExpenseDAO;
-import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
 import com.ayaan.FinanceTracker.models.BudgetTracker;
+import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.BudgetTrackerDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.ExpenseDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.models.Expense;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 
-public class ExpenseImpl {
-    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAO();
-    IncomeExpenseSourcesImpl incomeExpenseSourcesImpl = new IncomeExpenseSourcesImpl();
-    BankAccountDAO bankAccountDAO = new BankAccountDAO();
-    AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
-    ExpenseDAO expenseDAO = new ExpenseDAO();
+public class ExpenseService {
+    IncomeExpenseSourcesDAOImpl incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
+    IncomeExpenseSourcesService incomeExpenseSourcesImpl = new IncomeExpenseSourcesService();
+    BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
+    AccountTransactionService accountTransactionImpl = new AccountTransactionService();
+    ExpenseDAOImpl expenseDAO = new ExpenseDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
-    BudgetTrackerDAO budgetTrackerDAO = new BudgetTrackerDAO();
+    BudgetTrackerDAOImpl budgetTrackerDAO = new BudgetTrackerDAOImpl();
 
     public void addExpense() {
         try {

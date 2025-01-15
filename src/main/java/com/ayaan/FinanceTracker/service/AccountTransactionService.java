@@ -2,13 +2,13 @@ package com.ayaan.FinanceTracker.service;
 
 import java.util.List;
 
-import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
+import com.ayaan.FinanceTracker.daoImpl.AccountTransactionDAOImpl;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 
-public class AccountTransactionImpl {
+public class AccountTransactionService {
 
-    AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
+    AccountTransactionDAOImpl accountTransactionDAO = new AccountTransactionDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
 
     public void addTransaction(BankAccount bankAccount, String transactionType, Double transactionAmount) {
