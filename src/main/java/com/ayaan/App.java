@@ -1,9 +1,9 @@
 package com.ayaan;
-import com.ayaan.FinanceTracker.service.Menu;
+import com.ayaan.FinanceTracker.service.MenuService;
 
 public class App {                                 
     public static void main (String[] args) {
-        Menu menu = new Menu();                  
+        MenuService menu = new MenuService();                  
         menu.financeMenu();       
     }
 }

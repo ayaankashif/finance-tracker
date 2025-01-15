@@ -1,11 +1,11 @@
 package com.ayaan.FinanceTracker.service;
 
-import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
+import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
 import com.ayaan.FinanceTracker.models.BudgetTracker;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 
-public class IncomeExpenseSourcesImpl {
-    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAO();
+public class IncomeExpenseSourcesService {
+    IncomeExpenseSourcesDAOImpl incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
    
 
     public void addIncomeExpenseSource(String incomeExpenseSource, char type, BudgetTracker budgetTracker ) {

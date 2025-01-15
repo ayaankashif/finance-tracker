@@ -2,18 +2,18 @@ package com.ayaan.FinanceTracker.service;
 
 import java.util.Scanner;
 
-import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
-import com.ayaan.FinanceTracker.dao.BankAccountDAO;
+import com.ayaan.FinanceTracker.daoImpl.AccountTransactionDAOImpl;
+import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
 import com.ayaan.FinanceTracker.models.Income;
 
-public class Menu {
-    BankAccountImpl bankAccountImpl = new BankAccountImpl();
-    AccountTransactionImpl accountTransactionImpl = new AccountTransactionImpl();
-    IncomeImpl incomeImpl = new IncomeImpl();
-    BankAccountDAO bankAccountDAO = new BankAccountDAO();
-    ExpenseImpl expenseImpl = new ExpenseImpl();
+public class MenuService {
+    BankAccountService bankAccountImpl = new BankAccountService();
+    AccountTransactionService accountTransactionImpl = new AccountTransactionService();
+    IncomeService incomeImpl = new IncomeService();
+    BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
+    ExpenseService expenseImpl = new ExpenseService();
     Income income = new Income();
-    AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAO();
+    AccountTransactionDAOImpl accountTransactionDAO = new AccountTransactionDAOImpl();
     BudgetTrackerService budgetTrackerService = new BudgetTrackerService();
 
     public void financeMenu() {

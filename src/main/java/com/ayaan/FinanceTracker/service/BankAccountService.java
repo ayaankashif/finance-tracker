@@ -4,11 +4,11 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import com.ayaan.FinanceTracker.dao.BankAccountDAO;
+import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
 import com.ayaan.FinanceTracker.models.BankAccount;
 
-public class BankAccountImpl {
-    BankAccountDAO bankAccountDAO = new BankAccountDAO();
+public class BankAccountService {
+    BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
 
     public void addBankAccount() {
         System.out.println("Bank Name: ");
