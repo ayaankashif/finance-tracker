@@ -139,5 +139,6 @@ We welcome contributions to the Finance Tracker project. To contribute, follow t
 ## Reporting Issues
 If you encounter any issues or bugs, please report them on the project's GitHub issue tracker.
 
-## License
-This project is licensed under the MIT License. 
+## Copyright
+
+Released under the MIT License. See the [LICENSE](https://github.com/ayaankashif/finance-tracker/blob/main/LICENSE) file.
