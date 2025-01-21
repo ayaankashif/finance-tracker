@@ -60,7 +60,7 @@ public class AccountTransactionDAOImpl implements AccountTransactionDAO {
         }
     }
 
-    public AccountTransaction getTransactionById(Integer id)  {
+    public AccountTransaction getTransactionById(Integer id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(AccountTransaction.class, id);
         }
@@ -69,43 +69,59 @@ public class AccountTransactionDAOImpl implements AccountTransactionDAO {
     public List<Object[]> getBankTransaction() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            YearMonth currentMonth = YearMonth.now(); 
+            YearMonth currentMonth = YearMonth.now();
             LocalDate startDate = currentMonth.atDay(1);
             LocalDate endDate = currentMonth.atEndOfMonth();
 
             String hql = "SELECT ba.name, at.transactionAmt, at.transactionType FROM AccountTransaction at " +
-                         "JOIN at.bankAccId ba " +  
-                         "WHERE at.transactionDate BETWEEN :startDate AND :endDate"; 
+                    "JOIN at.bankAccId ba " +
+                    "WHERE at.transactionDate BETWEEN :startDate AND :endDate";
             return session.createQuery(hql, Object[].class)
-                          .setParameter("startDate", Date.valueOf(startDate))
-                          .setParameter("endDate", Date.valueOf(endDate))
-                          .list();
+                    .setParameter("startDate", Date.valueOf(startDate))
+                    .setParameter("endDate", Date.valueOf(endDate))
+                    .list();
         }
     }
 
     public List<Object[]> accountDashboard() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "SELECT ba.bankAccId, ba.name, sum(at.transactionAmt) FROM AccountTransaction at " +
-                         "JOIN at.bankAccId ba " +  
-                         "GROUP BY at.bankAccId";
+                    "JOIN at.bankAccId ba " +
+                    "GROUP BY at.bankAccId";
             return session.createQuery(hql, Object[].class).list();
         }
     }
 
     public List<Object[]> monthlyStats(String type) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            YearMonth currentMonth = YearMonth.now();
+            LocalDate startDate = currentMonth.atDay(1);
+            LocalDate endDate = currentMonth.atEndOfMonth();
+
             String hql = "SELECT ba.name, at.transactionAmt FROM AccountTransaction at " +
-                         "JOIN at.bankAccId ba " + 
-                         "WHERE at.transactionType = :type ";
+                    "JOIN at.bankAccId ba " +
+                    "WHERE at.transactionType = :type AND at.transactionDate BETWEEN :startDate AND :endDate";
             return session.createQuery(hql, Object[].class)
-                            .setParameter("type", type)
-                            .list();
+                    .setParameter("type", type)
+                    .setParameter("startDate", Date.valueOf(startDate))
+                    .setParameter("endDate", Date.valueOf(endDate))
+                    .list();
         }
     }
 
     public List<AccountTransaction> getAllTransactions() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from AccountTransaction", AccountTransaction.class).list();
+
+            YearMonth currentMonth = YearMonth.now();
+            LocalDate startDate = currentMonth.atDay(1);
+            LocalDate endDate = currentMonth.atEndOfMonth();
+
+            String hql = "SELECT * from AccountTransaction WHERE at.transactionDate BETWEEN :startDate AND :endDate";
+            return session.createQuery(hql, AccountTransaction.class)
+                    .setParameter("startDate", Date.valueOf(startDate))
+                    .setParameter("endDate", Date.valueOf(endDate))
+                    .list();
         }
-    }   
+    }
 }

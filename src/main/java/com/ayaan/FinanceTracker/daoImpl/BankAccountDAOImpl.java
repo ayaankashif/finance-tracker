@@ -60,8 +60,8 @@ public class BankAccountDAOImpl implements BankAccountDAO {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM BankAccount WHERE name = :bankName";
             return session.createQuery(hql, BankAccount.class)
-                          .setParameter("bankName", bankName)
-                          .uniqueResult();
+                    .setParameter("bankName", bankName)
+                    .uniqueResult();
         }
     }
 
@@ -71,10 +71,9 @@ public class BankAccountDAOImpl implements BankAccountDAO {
         }
     }
 
-    
     public List<BankAccount> getAllBankAccounts() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from BankAccount", BankAccount.class).list();
+            return session.createQuery("from BankAccount",BankAccount.class).list();
         }
     }
 }
