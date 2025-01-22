@@ -6,6 +6,8 @@ import com.ayaan.FinanceTracker.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 public class BankAccountDAOImpl implements BankAccountDAO {
@@ -73,7 +75,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 
     public List<BankAccount> getAllBankAccounts() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from BankAccount",BankAccount.class).list();
+            return session.createQuery("from BankAccount", BankAccount.class).list();
         }
     }
 }

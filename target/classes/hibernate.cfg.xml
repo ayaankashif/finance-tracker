@@ -35,7 +35,5 @@
         <mapping class="com.ayaan.FinanceTracker.models.BudgetTracker"/>
         <mapping class="com.ayaan.FinanceTracker.models.IncomeExpenseSources"/>
 
-
-
     </session-factory>
 </hibernate-configuration>
