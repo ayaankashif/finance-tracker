@@ -1,4 +1,7 @@
 # Finance Tracker 
+
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/license/mit)
+
 ## Overview
 The Finance Tracker project is a comprehensive application designed to manage and track financial transactions, including incomes, expenses, and budgets. The project leverages Hibernate ORM for database interactions, ensuring efficient and seamless data management.
 
