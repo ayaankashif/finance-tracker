@@ -186,7 +186,7 @@ public class BudgetTrackerService {
             if (budgetTracker == null || budgetTracker.isEmpty()) {
                 throw new DataAccessException("No Income Found!");
             }
-
+            
             System.out.println("\nIncome Overview ");
             System.out.printf("%-15s %-15s %-15s %-15s %-15s%n",
                     "Name", "Current Month", "Monthly Goal", "Remaining", "Progress");
@@ -237,7 +237,7 @@ public class BudgetTrackerService {
 
                 Double allocatedAmount = 0.0;
                 if (totalIncome != null && budgetPer != null) {
-                    allocatedAmount = (totalIncome * budgetPer) / 100;
+                    allocatedAmount = (totalIncome * budgetPer) / 100;  
                 }
 
                 Double currentExpense = 0.0;

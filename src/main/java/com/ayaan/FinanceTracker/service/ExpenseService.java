@@ -47,7 +47,7 @@ public class ExpenseService {
                 String bankAcc = scanner.nextLine();
                 bankAccount = bankAccountDAO.getBankAccountByCondition(bankAcc);
                 if (bankAccount == null) {
-                    throw new DataAccessException(
+                    logger.info(
                             "\nError: No Bank account found. Please enter a valid bank account name.");
                 }
             }
