@@ -17,6 +17,7 @@ public class MenuService {
     Income income = new Income();
     AccountTransactionDAOImpl accountTransactionDAO = new AccountTransactionDAOImpl();
     BudgetTrackerService budgetTrackerService = new BudgetTrackerService();
+    IncomeExpenseSourcesService incomeExpenseSourcesService = new IncomeExpenseSourcesService();
 
     public void financeMenu() {
         try {
@@ -26,7 +27,8 @@ public class MenuService {
             System.out.println("3. Income ");
             System.out.println("4. Expense ");
             System.out.println("5. Budget Tracker");
-            System.out.println("6. Exit");
+            System.out.println("6. Income Expense Menu");
+            System.out.println("7. Exit");
             Scanner scanner = new Scanner(System.in);
             Integer choice = scanner.nextInt();
 
@@ -52,6 +54,10 @@ public class MenuService {
                     financeMenu();
                     break;
                 case 6:
+                    incomeExpenseMenu();
+                    financeMenu();
+                    break;
+                case 7:
                     System.out.println("Exiting the finance Tracker.");
                     break;
                 default:
@@ -95,30 +101,52 @@ public class MenuService {
         }
     }
 
-    public void incomeMenu() {
-        System.out.println("Income Menu\n ");
-        System.out.println("1. Add Income Source");
-        System.out.println("2. Add Income");
-        System.out.println("3. Update Income");
-        System.out.println("4. List Income ");
-        System.out.println("5. Back to finance Tracker");
+
+    public void incomeExpenseMenu(){
+        System.out.println("Income Expense Menu\n ");
+        System.out.println("1. List Sources");
+        System.out.println("2. Add Income Source");
+        System.out.println("3. Add Expense Source");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
         switch (input) {
             case 1:
-                incomeImpl.addIncomeSource();
+                incomeExpenseSourcesService.listSources();
                 break;
             case 2:
-                incomeImpl.addIncome();
+                incomeImpl.addIncomeSource();
                 break;
             case 3:
+                expenseImpl.addExpenseSource();
+                break;
+            default:
+                System.out.println("Invalid Choice");
+                break;
+        }
+    }
+
+
+    public void incomeMenu() {
+        System.out.println("Income Menu\n ");
+        System.out.println("1. Add Income");
+        System.out.println("2. Update Income");
+        System.out.println("3. List Income ");
+        System.out.println("4. Back to finance Tracker");
+        Scanner scanner = new Scanner(System.in);
+        Integer input = scanner.nextInt();
+
+        switch (input) {
+            case 1:
+                incomeImpl.addIncome();
+                break;
+            case 2:
                 incomeImpl.updateIncome();
                 break;
-            case 4:
+            case 3:
                 incomeImpl.listIncome();
                 break;
-            case 5:
+            case 4:
                 financeMenu();
                 break;
             default:
@@ -129,28 +157,24 @@ public class MenuService {
 
     public void expenseMenu() {
         System.out.println("Expense Menu\n ");
-        System.out.println("1. Add Expense Source");
-        System.out.println("2. Add Expense");
-        System.out.println("3. Update Expense");
-        System.out.println("4. List Expense");
-        System.out.println("5. Back to finance Tracker");
+        System.out.println("1. Add Expense");
+        System.out.println("2. Update Expense");
+        System.out.println("3. List Expense");
+        System.out.println("4. Back to finance Tracker");
         Scanner scanner = new Scanner(System.in);
         Integer input = scanner.nextInt();
 
         switch (input) {
             case 1:
-                expenseImpl.addExpenseSource();
-                break;
-            case 2:
                 expenseImpl.addExpense();
                 break;
-            case 3:
+            case 2:
                 expenseImpl.updateExpense();
                 break;
-            case 4:
+            case 3:
                 expenseImpl.listExpense();
                 break;
-            case 5:
+            case 4:
                 financeMenu();
                 break;
             default:
