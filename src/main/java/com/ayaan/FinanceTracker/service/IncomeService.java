@@ -8,8 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
+import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.daoImpl.IncomeDAOImpl;
+import com.ayaan.FinanceTracker.dao.IncomeDAO;
 import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
+import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
 import com.ayaan.FinanceTracker.exceptionHandling.DataAccessException;
 import com.ayaan.FinanceTracker.exceptionHandling.InvalidIDException;
 import com.ayaan.FinanceTracker.exceptionHandling.invalidInputException;
@@ -21,11 +24,11 @@ import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
 public class IncomeService {
     private static final Logger logger = LoggerFactory.getLogger(IncomeService.class);
 
-    IncomeDAOImpl incomeDAO = new IncomeDAOImpl();
-    BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
+    IncomeDAO incomeDAO = new IncomeDAOImpl();
+    BankAccountDAO bankAccountDAO = new BankAccountDAOImpl();
     AccountTransactionService accountTransactionImpl = new AccountTransactionService();
     IncomeExpenseSourcesService incomeExpenseSourcesImpl = new IncomeExpenseSourcesService();
-    IncomeExpenseSourcesDAOImpl incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
+    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
     IncomeExpenseSources incomeExpenseSources = new IncomeExpenseSources();
 

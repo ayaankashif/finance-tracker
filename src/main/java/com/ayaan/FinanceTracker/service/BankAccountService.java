@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
 import com.ayaan.FinanceTracker.exceptionHandling.BankAlreadyExistException;
 import com.ayaan.FinanceTracker.exceptionHandling.DataAccessException;
-import com.ayaan.FinanceTracker.exceptionHandling.InvalidIDException;
-import com.ayaan.FinanceTracker.exceptionHandling.invalidInputException;
 import com.ayaan.FinanceTracker.models.BankAccount;
 
 public class BankAccountService {
