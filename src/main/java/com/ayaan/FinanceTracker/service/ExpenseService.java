@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ayaan.FinanceTracker.models.BudgetTracker;
 import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
+import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.daoImpl.BudgetTrackerDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.ExpenseDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
@@ -17,17 +18,20 @@ import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.models.Expense;
 import com.ayaan.FinanceTracker.models.IncomeExpenseSources;
+import com.ayaan.FinanceTracker.dao.BudgetTrackerDAO;
+import com.ayaan.FinanceTracker.dao.ExpenseDAO;
+import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
 
 public class ExpenseService {
     private static final Logger logger = LoggerFactory.getLogger(ExpenseService.class);
 
-    IncomeExpenseSourcesDAOImpl incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
+    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
     IncomeExpenseSourcesService incomeExpenseSourcesImpl = new IncomeExpenseSourcesService();
-    BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
+    BankAccountDAO bankAccountDAO = new BankAccountDAOImpl();
     AccountTransactionService accountTransactionImpl = new AccountTransactionService();
-    ExpenseDAOImpl expenseDAO = new ExpenseDAOImpl();
+    ExpenseDAO expenseDAO = new ExpenseDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
-    BudgetTrackerDAOImpl budgetTrackerDAO = new BudgetTrackerDAOImpl();
+    BudgetTrackerDAO budgetTrackerDAO = new BudgetTrackerDAOImpl();
 
     public void addExpense() {
         try {
@@ -189,7 +193,7 @@ public class ExpenseService {
                     expense.getExpenseId(),
                     expense.getName(),
                     expense.getExpenseSourceId().getIncomeExpenseSource(),
-                    expense.getExpense()));
+                    Math.abs(expense.getExpense())));
 
         } catch (DataAccessException e) {
             logger.error("Database error while fetching income sources: {}", e.getMessage());
