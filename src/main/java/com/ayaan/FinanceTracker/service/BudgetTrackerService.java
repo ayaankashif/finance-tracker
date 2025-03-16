@@ -8,9 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import com.ayaan.FinanceTracker.models.Expense;
 import com.ayaan.FinanceTracker.daoImpl.BudgetTrackerDAOImpl;
+import com.ayaan.FinanceTracker.dao.BudgetTrackerDAO;
 import com.ayaan.FinanceTracker.daoImpl.ExpenseDAOImpl;
+import com.ayaan.FinanceTracker.dao.ExpenseDAO;
 import com.ayaan.FinanceTracker.daoImpl.IncomeDAOImpl;
+import com.ayaan.FinanceTracker.dao.IncomeDAO;
 import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
+import com.ayaan.FinanceTracker.dao.IncomeExpenseSourcesDAO;
 import com.ayaan.FinanceTracker.exceptionHandling.DataAccessException;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BudgetTracker;
@@ -22,10 +26,10 @@ public class BudgetTrackerService {
     IncomeService incomeImpl = new IncomeService();
     IncomeExpenseSourcesService incomeExpenseSourcesImpl = new IncomeExpenseSourcesService();
     IncomeExpenseSources incomeExpenseSources = new IncomeExpenseSources();
-    IncomeExpenseSourcesDAOImpl incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
-    BudgetTrackerDAOImpl budgetTrackerDAO = new BudgetTrackerDAOImpl();
-    IncomeDAOImpl incomeDAO = new IncomeDAOImpl();
-    ExpenseDAOImpl expenseDAO = new ExpenseDAOImpl();
+    IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
+    BudgetTrackerDAO budgetTrackerDAO = new BudgetTrackerDAOImpl();
+    IncomeDAO incomeDAO = new IncomeDAOImpl();
+    ExpenseDAO expenseDAO = new ExpenseDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
 
     public void incomeOverview() {
@@ -198,9 +202,14 @@ public class BudgetTrackerService {
 
                 Double remaining = 0.0;
                 Double progress = 0.0;
+                
                 if (incomeExpenseSources.getMonthlyBudget() != null && currentMonth != null || monthlyGoal != null) {
                     remaining = monthlyGoal - currentMonth;
                     progress = currentMonth / monthlyGoal * 100;
+                }
+
+                if(monthlyGoal == null){
+                    monthlyGoal = 0.0;
                 }
 
                 System.out.printf("%-15s %-15s %-15s %-15s %-15.2f%n",
