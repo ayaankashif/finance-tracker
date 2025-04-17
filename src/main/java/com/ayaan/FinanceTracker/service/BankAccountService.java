@@ -16,6 +16,7 @@ public class BankAccountService {
     private Logger logger = LoggerFactory.getLogger(BankAccountService.class);
 
     BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
+    AccountTransactionService accountTransactionImpl = new AccountTransactionService();
 
     public void addBankAccount() {
         try {
@@ -24,11 +25,11 @@ public class BankAccountService {
             String name = scanner.nextLine();
             BankAccount bankAccount = bankAccountDAO.getBankAccountByCondition(name);
             if (bankAccount != null) {
-                throw new BankAlreadyExistException("Bank Account already exists");
+            throw new BankAlreadyExistException("Bank Account already exists");
             }
             bankAccount = new BankAccount(name, new Date(System.currentTimeMillis()));
             bankAccountDAO.saveBankAccount(bankAccount);
-            logger.info("Bank Account Added");
+            accountTransactionImpl.addTransaction(bankAccount, null, 0.0);
 
         } catch (BankAlreadyExistException e) {
             logger.error("Error while giving bank Account: {}", e.getMessage());

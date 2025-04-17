@@ -7,13 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ayaan.FinanceTracker.models.BudgetTracker;
+import com.ayaan.FinanceTracker.daoImpl.AccountTransactionDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
+import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.daoImpl.BudgetTrackerDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.ExpenseDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.IncomeExpenseSourcesDAOImpl;
 import com.ayaan.FinanceTracker.exceptionHandling.DataAccessException;
 import com.ayaan.FinanceTracker.exceptionHandling.InvalidIDException;
+import com.ayaan.FinanceTracker.exceptionHandling.LowBalanceException;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 import com.ayaan.FinanceTracker.models.Expense;
@@ -32,6 +35,7 @@ public class ExpenseService {
     ExpenseDAO expenseDAO = new ExpenseDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
     BudgetTrackerDAO budgetTrackerDAO = new BudgetTrackerDAOImpl();
+    AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAOImpl();
 
     public void addExpense() {
         try {
@@ -51,8 +55,12 @@ public class ExpenseService {
                 String bankAcc = scanner.nextLine();
                 bankAccount = bankAccountDAO.getBankAccountByCondition(bankAcc);
                 if (bankAccount == null) {
-                    logger.info(
-                            "\nError: No Bank account found. Please enter a valid bank account name.");
+                    logger.info("\nError: No Bank account found. Please enter a valid bank account name.");
+                } else {
+                    AccountTransaction account = accountTransactionDAO.getTransactionById(bankAccount.getBankAccId());
+                    if (account.getTransactionAmt() == null || account.getTransactionAmt() <= 0) {
+                        throw new LowBalanceException("Low Balance in account " + bankAccount.getName() + ". Please add funds.");
+                    }
                 }
             }
 
@@ -75,6 +83,8 @@ public class ExpenseService {
             expenseDAO.saveExpense(expense1);
             logger.info("\nExpense added successfully");
 
+        }catch (LowBalanceException e) {
+            logger.error("Warning: {}", e.getMessage());
         } catch (DataAccessException e) {
             logger.error("Database error while fetching income sources: {}", e.getMessage());
         } catch (Exception e) {
