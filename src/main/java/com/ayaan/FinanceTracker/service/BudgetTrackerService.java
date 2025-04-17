@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ayaan.FinanceTracker.models.Expense;
+import com.ayaan.FinanceTracker.models.Income;
 import com.ayaan.FinanceTracker.daoImpl.BudgetTrackerDAOImpl;
 import com.ayaan.FinanceTracker.dao.BudgetTrackerDAO;
 import com.ayaan.FinanceTracker.daoImpl.ExpenseDAOImpl;
@@ -187,6 +188,7 @@ public class BudgetTrackerService {
     public void IncomeOverviewDisplay() {
         try {
             List<Object[]> budgetTracker = budgetTrackerDAO.displayIncome();
+            List<Income> incomes = incomeDAO.getAllIncome();
             if (budgetTracker == null || budgetTracker.isEmpty()) {
                 throw new DataAccessException("No Income Found!");
             }
@@ -210,8 +212,8 @@ public class BudgetTrackerService {
 
                 if(monthlyGoal == null){
                     monthlyGoal = 0.0;
-                }
-
+                } 
+  
                 System.out.printf("%-15s %-15s %-15s %-15s %-15.2f%n",
                         Name, currentMonth, monthlyGoal, remaining, progress);
             }
@@ -300,6 +302,10 @@ public class BudgetTrackerService {
                         || monthlyBudget != null) {
                     remaining = monthlyBudget + currentMonth;
                     progress = (Math.abs(currentMonth) / monthlyBudget) * 100;
+                }
+
+                if(monthlyBudget == null) {
+                    monthlyBudget = 0.0;
                 }
 
                 System.out.printf("%-15s %-15s %-15s %-15s %-15.2f %-15s%n",

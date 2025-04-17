@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ayaan.FinanceTracker.daoImpl.AccountTransactionDAOImpl;
 import com.ayaan.FinanceTracker.exceptionHandling.DataAccessException;
+import com.ayaan.FinanceTracker.exceptionHandling.LowBalanceException;
 import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 
@@ -75,7 +76,7 @@ public class AccountTransactionService {
                 if (transactionAmt < 0 ){
                     transactionAmt  = 0.0;
                 }
-                
+ 
                 System.out.printf("%-12s %-17s %-15s%n" , 
                             BankId, bankName, transactionAmt);
             }
