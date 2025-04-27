@@ -36,7 +36,7 @@ public class AccountTransactionService {
             if (transaction == null || transaction.isEmpty()) {
                 throw new DataAccessException("No Bank Transactions Found.");
             }
-
+            
             System.out.println("\nBank Transaction List:");
             System.out.printf("%-15s %-15s %-15s%n",
                 "Bank Name", "Amount", "Transaction Type");
@@ -45,8 +45,12 @@ public class AccountTransactionService {
                 String bankName = (String) record[0];
                 Double transactionAmt = (Double) record[1];
                 String transactionType = (String) record[2];
+                transactionAmt = Math.abs(transactionAmt);
 
-                System.out.printf("%-15s %-15s %-15s%n", bankName, transactionAmt, transactionType);
+                if (transactionAmt > 0.0){
+                    System.out.printf("%-15s %-15s %-15s%n", bankName, transactionAmt, transactionType);
+                }
+
             }
 
         } catch (DataAccessException e) {
