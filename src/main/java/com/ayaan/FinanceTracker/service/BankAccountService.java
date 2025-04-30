@@ -7,16 +7,21 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
+import com.ayaan.FinanceTracker.daoImpl.AccountTransactionDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
+import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.exceptionHandling.BankAlreadyExistException;
 import com.ayaan.FinanceTracker.exceptionHandling.DataAccessException;
+import com.ayaan.FinanceTracker.models.AccountTransaction;
 import com.ayaan.FinanceTracker.models.BankAccount;
 
 public class BankAccountService {
     private Logger logger = LoggerFactory.getLogger(BankAccountService.class);
 
-    BankAccountDAOImpl bankAccountDAO = new BankAccountDAOImpl();
+    BankAccountDAO bankAccountDAO = new BankAccountDAOImpl();
     AccountTransactionService accountTransactionImpl = new AccountTransactionService();
+    AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAOImpl();
 
     public void addBankAccount() {
         try {
@@ -26,10 +31,20 @@ public class BankAccountService {
             BankAccount bankAccount = bankAccountDAO.getBankAccountByCondition(name);
             if (bankAccount != null) {
             throw new BankAlreadyExistException("Bank Account already exists");
-            }
-            bankAccount = new BankAccount(name, new Date(System.currentTimeMillis()));
-            bankAccountDAO.saveBankAccount(bankAccount);
-            accountTransactionImpl.addTransaction(bankAccount, null, 0.0);
+        }
+        bankAccount = new BankAccount(name, new Date(System.currentTimeMillis()));
+        bankAccountDAO.saveBankAccount(bankAccount); 
+
+        AccountTransaction accountTransaction = accountTransactionDAO.getTransactionByBankAccountId(bankAccount.getBankAccId());
+        System.out.println(bankAccount.getBankAccId());
+        if (accountTransaction == null) {
+            accountTransaction = new AccountTransaction();
+            accountTransaction.setTransactionAmt(0.0);
+            accountTransaction.setBankAccId(bankAccount);          
+        }
+        
+        System.out.println("Transaction Amount: " + accountTransaction.getTransactionAmt() +
+                           " | Account Holder: " + accountTransaction.getBankAccId().getName());
 
         } catch (BankAlreadyExistException e) {
             logger.error("Error while giving bank Account: {}", e.getMessage());
