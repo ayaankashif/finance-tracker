@@ -7,7 +7,9 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ayaan.FinanceTracker.daoImpl.AccountTransactionDAOImpl;
 import com.ayaan.FinanceTracker.daoImpl.BankAccountDAOImpl;
+import com.ayaan.FinanceTracker.dao.AccountTransactionDAO;
 import com.ayaan.FinanceTracker.dao.BankAccountDAO;
 import com.ayaan.FinanceTracker.daoImpl.IncomeDAOImpl;
 import com.ayaan.FinanceTracker.dao.IncomeDAO;
@@ -31,6 +33,7 @@ public class IncomeService {
     IncomeExpenseSourcesDAO incomeExpenseSourcesDAO = new IncomeExpenseSourcesDAOImpl();
     AccountTransaction accountTransaction = new AccountTransaction();
     IncomeExpenseSources incomeExpenseSources = new IncomeExpenseSources();
+    AccountTransactionDAO accountTransactionDAO = new AccountTransactionDAOImpl();
 
     public void addIncome() {
         try {
@@ -61,11 +64,12 @@ public class IncomeService {
 
             System.out.println("Income: ");
             Double income = scanner.nextDouble();
+                
             accountTransaction.setTransactionAmt(accountTransaction.getTransactionAmt() + income);
-
-            Income income1 = new Income(name, bankAccount, income, incomeExpenseSources,
-                    new Date(System.currentTimeMillis()));
             accountTransactionImpl.addTransaction(bankAccount, "Credit", income);
+            
+            Income income1 = new Income(name, bankAccount, income, incomeExpenseSources,
+            new Date(System.currentTimeMillis()));
 
             incomeDAO.saveIncome(income1);
             logger.info("\nIncome added successfully");

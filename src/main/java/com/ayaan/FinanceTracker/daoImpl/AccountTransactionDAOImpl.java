@@ -131,4 +131,29 @@ public class AccountTransactionDAOImpl implements AccountTransactionDAO {
                     .list();
         }
     }
+
+    @Override
+    public Double getTotalAmountByBankAccountId(int bankAccId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            String hql = "SELECT sum(at.transactionAmt) FROM AccountTransaction at WHERE at.bankAccId.bankAccId = :bankAccId GROUP BY at.bankAccId";
+            return session.createQuery(hql, Double.class)
+                    .setParameter("bankAccId", bankAccId)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+
+    public AccountTransaction getTransactionByBankAccountId(int bankAccId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            String hql = "FROM AccountTransaction at WHERE at.bankAccId.bankAccId = :bankAccId";
+            return session.createQuery(hql, AccountTransaction.class)
+                    .setParameter("bankAccId", bankAccId)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
